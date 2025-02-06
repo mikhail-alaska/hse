@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"errors"
 )
 
 // EllipticCurve задаёт кривую y^2 = x^3 + a*x + b над полем F_p.
@@ -113,19 +114,24 @@ func (curve *EllipticCurve) ScalarMult(P Point, k int) Point {
 	return result
 }
 
-// Points вычисляет все точки эллиптической кривой (наивный перебор).
-func (curve *EllipticCurve) Points() []Point {
-	points := []Point{}
-	for x := 0; x < curve.P; x++ {
-		fx := (x*x*x + curve.A*x + curve.B) % curve.P
-		for y := 0; y < curve.P; y++ {
-			if (y*y)%curve.P == fx {
-				points = append(points, Point{X: x, Y: y, Infinity: false})
-			}
-		}
+// DiscreteLog реализует метод больших и малых шагов для поиска k.
+func (curve *EllipticCurve) DiscreteLog(P, Q Point, groupOrder int) (int, error) {
+	m := int(float64(groupOrder) * 0.5)
+	babySteps := make(map[Point]int)
+	current := Point{Infinity: true}
+	for j := 0; j < m; j++ {
+		babySteps[current] = j
+		current = curve.Add(current, P)
 	}
-	points = append(points, Point{Infinity: true})
-	return points
+	mP := curve.ScalarMult(P, m)
+	current = Q
+	for i := 0; i < m; i++ {
+		if j, found := babySteps[current]; found {
+			return i*m + j, nil
+		}
+		current = curve.Add(current, curve.Neg(mP))
+	}
+	return -1, errors.New("discrete log not found")
 }
 
 func main() {
@@ -137,31 +143,4 @@ func main() {
 	fmt.Printf("Эллиптическая кривая: y^2 = x^3 + %d*x + %d над F_%d\n", a, b, p)
 	pts := curve.Points()
 	fmt.Printf("Найдено точек: %d\n", len(pts))
-	for _, pt := range pts {
-		if pt.Infinity {
-			fmt.Println("Infinity")
-		} else {
-			fmt.Printf("(%d, %d)\n", pt.X, pt.Y)
-		}
-	}
-
-	if len(pts) > 1 {
-		P := pts[0]
-		Q := pts[1]
-		R := curve.Add(P, Q)
-		fmt.Printf("P = (%d, %d)\nQ = (%d, %d)\nP+Q = (%d, %d)\n", P.X, P.Y, Q.X, Q.Y, R.X, R.Y)
-	}
-
-	if len(pts) > 0 {
-		P := pts[0]
-		k := 3
-		R := curve.ScalarMult(P, k)
-		fmt.Printf("%d * P = (%d, %d)\n", k, R.X, R.Y)
-	}
-
-	if isPrimeFermat(p, 5) {
-		fmt.Printf("%d является простым числом (по тесту Ферма).\n", p)
-	} else {
-		fmt.Printf("%d не является простым числом.\n", p)
-	}
 }
