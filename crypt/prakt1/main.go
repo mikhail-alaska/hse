@@ -132,6 +132,7 @@ func PolySum(a, b []int, n int) []int {
 func Neprevodim(p, n int) ([][]int, error) {
 	b := [][]int{}
 	for i := Power(p, n); i < Power(p, n+1); i++ {
+        fmt.Println(11)
 		a := Convert(i, p)
 		flag := 0
 		poly := []int{}
