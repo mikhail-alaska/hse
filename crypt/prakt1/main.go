@@ -527,7 +527,7 @@ func WorkShifr() {
 	fmt.Println("Введите сообщение")
 	in := bufio.NewReader(os.Stdin)
 	var message string
-	fmt.Fscan(in, &message)
+	fmt.Fscanln(in, &message)
 	alphabet := "123456abcdefghijklmnopqrstuvwxyz"
 
 	stepen := 0
