@@ -96,11 +96,11 @@ func Convert(number, base int) string {
 }
 
 func ZeroFill(s string, n int) string {
-    r := strings.Split(s, "")
-    for i := 0; i < n-len(s); i++ {
-        r = append([]string{"0"}, r...)
-    }
-    return strings.Join(r, "")
+	r := strings.Split(s, "")
+	for i := 0; i < n-len(s); i++ {
+		r = append([]string{"0"}, r...)
+	}
+	return strings.Join(r, "")
 }
 
 func CreateGalua(p, n int) [][]int {
@@ -283,15 +283,13 @@ func PolyDiv(a, b []int, p int) ([]int, error) {
 	}
 
 	for len(c1) >= len(c2) {
-
-            fmt.Println(11)
-		i := len(c1) - 1
-		j := len(c2) - 1
-		k := c1[i] / c2[j]
-		for i >= 0 && j >= 0 {
-			c1[i] -= c2[j] * k
-			i--
-			j--
+		// Определяем разность степеней
+		degDiff := len(c1) - len(c2)
+		// Находим коэффициент, с которым нужно домножить c2
+		k := c1[len(c1)-1] / c2[len(c2)-1]
+		// Вычитаем k * x^(degDiff) * c2 из c1
+		for j := 0; j < len(c2); j++ {
+			c1[degDiff+j] -= c2[j] * k
 		}
 		c1 = RemoveZeroes(c1)
 	}
@@ -473,8 +471,8 @@ func WorkPole() {
 
 	fmt.Println("Введите через пробел числа p, n")
 	in := bufio.NewReader(os.Stdin)
-    var p, n int
-    fmt.Fscan(in, &p, &n)
+	var p, n int
+	fmt.Fscan(in, &p, &n)
 	fmt.Println("Размеры поля: p =", p, "n =", n)
 
 	pole := CreateGalua(p, n)
@@ -492,7 +490,7 @@ func WorkPole() {
 
 	fmt.Println("Введите номер элемента с которым будем работать")
 	neprChosenNumber := 1
-    fmt.Fscan(in, &neprChosenNumber)
+	fmt.Fscan(in, &neprChosenNumber)
 	nepr := neprev[neprChosenNumber-1]
 
 	fmt.Println("Вами выбран неприводимый элемент", nepr)
@@ -503,10 +501,9 @@ func WorkPole() {
 		fmt.Println(c+1, i[0])
 	}
 
-
 	fmt.Println("Введите номер элемента с которым будем работать")
 	obrazChosen := 0
-    fmt.Fscan(in, &obrazChosen)
+	fmt.Fscan(in, &obrazChosen)
 	fmt.Println("Выбран", obraz[obrazChosen][0])
 	steps, ok := obraz[obrazChosen][1].([][]interface{})
 	if !ok {
@@ -549,7 +546,7 @@ func WorkShifr() {
 		return
 	}
 	input = strings.TrimSpace(input)
-    message = input
+	message = input
 
 	stepen := 0
 
