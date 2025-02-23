@@ -301,11 +301,8 @@ func PolyDiv(a, b []int, p int) ([]int, error) {
 
 	for len(c1) >= len(c2) {
 		degDiff := len(c1) - len(c2)
-		// Находим обратный элемент для старшего коэффициента c2
 		inv := modInverse(c2[len(c2)-1], p)
-		// Вычисляем коэффициент k по модулю p
 		k := (c1[len(c1)-1] * inv) % p
-		// Вычитаем k * (c2, умноженный на x^(degDiff)) из c1
 		for i := 0; i < len(c2); i++ {
 			index := i + degDiff
 			c1[index] = (c1[index] - k*c2[i]) % p
