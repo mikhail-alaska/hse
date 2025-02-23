@@ -162,7 +162,6 @@ func Neprevodim(p, n int) ([][]int, error) {
 				}
 				res, err := PolyDiv(poly, j, p)
 
-            fmt.Println(11)
 				if res == nil {
 					flag = 1
 				}
@@ -262,6 +261,7 @@ func FracModule(p int, num float64) float64 {
 
 func PolyDiv(a, b []int, p int) ([]int, error) {
 
+            fmt.Println(11)
 	c1 := []int{}
 	c2 := []int{}
 	for _, i := range a {
