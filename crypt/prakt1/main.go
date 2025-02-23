@@ -395,7 +395,7 @@ func AffineEncode(message,
 					multiplication := PolyMult(bukva_galua, key_alpha, 2, nepr)
 					sum := PolySum(multiplication, key_beta, 2)
 					index := 0
-					for i1, _ := range sum {
+					for i1 := range sum {
 						index = index + Power(2, i1)*sum[i1]
 					}
 					shifr = append(shifr, alph[index%len(alphabet)])
