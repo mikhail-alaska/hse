@@ -470,6 +470,7 @@ func WorkPole() {
 	fmt.Println("Размеры поля: p =", p, "n =", n)
 
 	pole := CreateGalua(p, n)
+	fmt.Println("Поле Галуа")
 	fmt.Println(pole)
 
 	neprev, err := Neprevodim(p, n)
