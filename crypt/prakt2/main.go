@@ -1,9 +1,11 @@
 package main
 
 import (
+	"bufio"
+	"errors"
 	"fmt"
 	"math/big"
-	"errors"
+	"os"
 )
 
 // EllipticCurve задаёт кривую вида y^2 = x^3 + a*x + b над полем F_p.
@@ -310,7 +312,7 @@ func (curve *EllipticCurve) DiscreteLog(P, Q Point, groupOrder *big.Int) (*big.I
 	// m = ceil(sqrt(n))
 	m := new(big.Int).Sqrt(groupOrder)
 	m.Add(m, big.NewInt(1))
-	
+
 	// Построение таблицы baby steps: jP для j = 0 ... m-1.
 	babySteps := make(map[string]*big.Int)
 	current := Point{Infinity: true} // 0 * P
@@ -343,7 +345,7 @@ func (curve *EllipticCurve) DiscreteLog(P, Q Point, groupOrder *big.Int) (*big.I
 func primeFactors(n int64) []int64 {
 	factors := []int64{}
 	for i := int64(2); i*i <= n; i++ {
-		for n % i == 0 {
+		for n%i == 0 {
 			factors = append(factors, i)
 			n /= i
 		}
@@ -401,9 +403,13 @@ func (curve *EllipticCurve) FindPointsOfPrimeOrder(prime int64, groupOrder *big.
 func main() {
 	// Пример: выбираем малое простое p и коэффициенты a, b.
 	// Для исследования кривых с |E(F_p)| от 2^10 до 2^512 следует подбирать соответствующие параметры.
-	p := big.NewInt(17)
-	a := big.NewInt(2)
-	b := big.NewInt(2)
+	fmt.Println("введите через пробел числа p, a, b")
+	in := bufio.NewReader(os.Stdin)
+    var pR, aR, bR int64
+    fmt.Fscan(in, &pR, &aR, &bR)
+    p := big.NewInt(pR)
+	a := big.NewInt(aR)
+	b := big.NewInt(bR)
 	curve := EllipticCurve{
 		P: p,
 		A: a,
