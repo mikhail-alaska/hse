@@ -303,8 +303,8 @@ func Opposite(galua [][]int, k int, nepr []int, p int) []int {
 	for i := 1; i < len(galua); i++ {
 		temp := PolyMult(galua[k], galua[i], p, nepr)
 
-        one := make([]int, len(temp))
-        one[0] = 1
+		one := make([]int, len(temp))
+		one[0] = 1
 		if SliceEq(temp, one) {
 			return galua[i]
 		}
@@ -347,7 +347,7 @@ func Beta(stepen int) []int {
 		s := -1
 		for s < 0 || s >= stepen {
 			r := bufio.NewReader(os.Stdin)
-			char1, err := r.ReadByte()
+			char1, _, err := r.ReadRune()
 			if err != nil {
 				fmt.Println("i have a problem with your input")
 			}
@@ -526,8 +526,8 @@ func WorkShifr() {
 
 	fmt.Println("Введите сообщение")
 	in := bufio.NewReader(os.Stdin)
-    var message string
-    fmt.Fscan(in, &message)
+	var message string
+	fmt.Fscan(in, &message)
 	alphabet := "123456abcdefghijklmnopqrstuvwxyz"
 
 	stepen := 0
@@ -548,10 +548,9 @@ func WorkShifr() {
 		fmt.Println(i+1, j)
 	}
 
-
 	fmt.Println("Введите номер элемента с которым будем работать")
 	nepr_c := 0
-    fmt.Fscan(in, &nepr_c)
+	fmt.Fscan(in, &nepr_c)
 
 	nepr_chosen := nepr_all[nepr_c]
 
@@ -569,13 +568,13 @@ func WorkShifr() {
 func main() {
 	in := bufio.NewReader(os.Stdin)
 	fmt.Println(`Введите "y", если надо поработать с полем и "n", если с шифром`)
-    var what string
-    fmt.Fscan(in, &what)
+	var what string
+	fmt.Fscan(in, &what)
 
 	switch what {
-    case "y":
+	case "y":
 		WorkPole()
-    case "n":
+	case "n":
 		WorkShifr()
 	}
 }
