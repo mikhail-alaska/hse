@@ -527,8 +527,14 @@ func WorkShifr() {
 	fmt.Println("Введите сообщение")
 	in := bufio.NewReader(os.Stdin)
 	var message string
-	fmt.Fscanln(in, &message)
 	alphabet := "123456abcdefghijklmnopqrstuvwxyz"
+	input, err := in.ReadString('\n')
+	if err != nil {
+		fmt.Println("Ошибка чтения:", err)
+		return
+	}
+	input = strings.TrimSpace(input)
+    message = input
 
 	stepen := 0
 
