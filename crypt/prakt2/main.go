@@ -461,9 +461,9 @@ func main() {
 		Q := curve.ScalarMult(P, kExpected)
 		kFound, err := curve.DiscreteLog(P, Q, groupOrder)
 		if err != nil {
-			fmt.Println("Не удалось найти дискретный логарифм:", err)
+			fmt.Println("Не удалось провести скалярное умножение:", err)
 		} else {
-			fmt.Printf("Найден дискретный логарифм: k = %s, P={%v %v}, Q={%v %v}\n", kFound.String(), P.X, P.Y, Q.X, Q.Y)
+			fmt.Printf("удалось провесит скалярное умножение: k = %s, P={%v %v}, Q={%v %v}\n", kFound.String(), P.X, P.Y, Q.X, Q.Y)
 		}
 	}
 
