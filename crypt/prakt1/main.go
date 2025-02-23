@@ -157,11 +157,12 @@ func Neprevodim(p, n int) ([][]int, error) {
 			galua1 := galua[1:]
 			for _, j := range galua1 {
 
-            fmt.Println(11)
 				if j[1:] == nil {
 					continue
 				}
 				res, err := PolyDiv(poly, j, p)
+
+            fmt.Println(11)
 				if res == nil {
 					flag = 1
 				}
