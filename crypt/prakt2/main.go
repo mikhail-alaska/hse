@@ -482,7 +482,7 @@ func main() {
 		ptsPrime := curve.FindPointsOfPrimeOrder(q, groupOrder)
 		fmt.Printf("Точки простого порядка %d:\n", q)
 		for _, pt := range ptsPrime {
-            fmt.Printf("%s, ",pointToString(pt))
+			fmt.Println(pointToString(pt))
 		}
 	}
 }
