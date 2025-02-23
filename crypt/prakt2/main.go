@@ -434,7 +434,7 @@ func main() {
 
 	// Пример: сложение двух точек.
 	if len(pts) >= 2 {
-		P := pts[0]
+		P := pts[2]
 		Q := pts[1]
 		R := curve.Add(P, Q)
 		fmt.Printf("P = %s\nQ = %s\nP+Q = %s\n", pointToString(P), pointToString(Q), pointToString(R))
