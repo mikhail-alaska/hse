@@ -422,9 +422,9 @@ func main() {
 	fmt.Printf("Найдено точек: %d\n", len(pts))
 	for _, pt := range pts {
 		if pt.Infinity {
-			fmt.Printf("Infinity, ")
+			fmt.Println("Infinity")
 		} else {
-			fmt.Printf("(%s, %s), ", pt.X.String(), pt.Y.String())
+			fmt.Printf("(%s, %s)\n", pt.X.String(), pt.Y.String())
 		}
 	}
 
