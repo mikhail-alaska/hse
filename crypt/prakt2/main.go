@@ -455,18 +455,15 @@ func main() {
 		fmt.Printf("%s не является простым числом.\n", p.String())
 	}
 
-	// Пример: поиск дискретного логарифма.
-	// Найдём k такое, что Q = k*P.
 	if len(pts) > 2 {
 		P := pts[0]
-		// Пусть Q = 3 * P.
 		kExpected := big.NewInt(3)
 		Q := curve.ScalarMult(P, kExpected)
 		kFound, err := curve.DiscreteLog(P, Q, groupOrder)
 		if err != nil {
 			fmt.Println("Не удалось найти дискретный логарифм:", err)
 		} else {
-			fmt.Printf("Найден дискретный логарифм: k = %s (ожидалось %s)\n", kFound.String(), kExpected.String())
+			fmt.Printf("Найден дискретный логарифм: k = %s, P={%v}, Q={%v}\n", kFound.String(), P, Q)
 		}
 	}
 
