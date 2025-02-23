@@ -143,7 +143,6 @@ func Neprevodim(p, n int) ([][]int, error) {
 			sum := 0
 			for l := 0; l < len(poly); l++ {
 
-            fmt.Println(11)
 				sum = sum + poly[l]*(Power(j, n+1-l-1))
 			}
 			if sum%p == 0 {
@@ -153,6 +152,8 @@ func Neprevodim(p, n int) ([][]int, error) {
 
 		if n%2 == 0 {
 			galua := CreateGalua(p, n)
+
+            fmt.Println(11)
 			galua1 := galua[1:]
 			for _, j := range galua1 {
 				if j[1:] == nil {
