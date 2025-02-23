@@ -96,13 +96,13 @@ func Convert(number, base int) string {
 }
 
 func ZeroFill(s string, n int) string {
-
-	r := strings.Split(s, "")
-	for i := 0; i < n-len(s); i++ {
-		r = append([]string{"0"}, s)
-	}
-	return strings.Join(r, "")
+    r := strings.Split(s, "")
+    for i := 0; i < n-len(s); i++ {
+        r = append([]string{"0"}, r...)
+    }
+    return strings.Join(r, "")
 }
+
 func CreateGalua(p, n int) [][]int {
 	field := [][]int{}
 	for i := 0; i < Power(p, n); i++ {
