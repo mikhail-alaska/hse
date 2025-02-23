@@ -524,7 +524,7 @@ func WorkPole() {
 func WorkShifr() {
 	fmt.Println("Работа с шифром")
 
-	fmt.Println("введите сообщение")
+	fmt.Println("Введите сообщение")
 	in := bufio.NewReader(os.Stdin)
     var message string
     fmt.Fscan(in, &message)
@@ -548,8 +548,10 @@ func WorkShifr() {
 		fmt.Println(i+1, j)
 	}
 
+
 	fmt.Println("Введите номер элемента с которым будем работать")
 	nepr_c := 0
+    fmt.Fscan(in, &nepr_c)
 
 	nepr_chosen := nepr_all[nepr_c]
 
