@@ -105,7 +105,6 @@ func ZeroFill(s string, n int) string {
 
 func CreateGalua(p, n int) [][]int {
 
-            fmt.Println(11)
 	field := [][]int{}
 	for i := 0; i < Power(p, n); i++ {
 		a := Convert(i, p)
@@ -157,6 +156,8 @@ func Neprevodim(p, n int) ([][]int, error) {
 
 			galua1 := galua[1:]
 			for _, j := range galua1 {
+
+            fmt.Println(11)
 				if j[1:] == nil {
 					continue
 				}
