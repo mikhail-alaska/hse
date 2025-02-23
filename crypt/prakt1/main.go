@@ -569,7 +569,7 @@ func WorkShifr() {
 func main() {
 	in := bufio.NewReader(os.Stdin)
 	fmt.Println(`Введите "y", если надо поработать с полем и "n", если с шифром`)
-	what := 'n'
+	what := ' '
     fmt.Fscan(in, &what)
 	switch what {
 	case 'y':
