@@ -136,6 +136,8 @@ func Neprevodim(p, n int) ([][]int, error) {
 		flag := 0
 		poly := []int{}
 		for _, j := range a {
+
+            fmt.Println(11)
 			poly = append(poly, int(j-'0'))
 		}
 		for j := 0; j < p; j++ {
@@ -215,7 +217,6 @@ func FindMultip(galua [][]int, p, n int, neprevod []int) [][]interface{} {
 		steps := [][]interface{}{{proizved, st}}
 
 		for !flag {
-            fmt.Println(11)
 			proizved = PolyMult(proizved, galua[i], p, neprevod)
 			st++
 			steps = append(steps, []interface{}{proizved, st})
