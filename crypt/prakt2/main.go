@@ -456,14 +456,14 @@ func main() {
 	}
 
 	if len(pts) > 2 {
-		P := pts[0]
+		P := pts[1]
 		kExpected := big.NewInt(3)
 		Q := curve.ScalarMult(P, kExpected)
 		kFound, err := curve.DiscreteLog(P, Q, groupOrder)
 		if err != nil {
 			fmt.Println("Не удалось найти дискретный логарифм:", err)
 		} else {
-			fmt.Printf("Найден дискретный логарифм: k = %s, P={%v}, Q={%v}\n", kFound.String(), P, Q)
+			fmt.Printf("Найден дискретный логарифм: k = %s, P={%v %v}, Q={%v %v}\n", kFound.String(), P.X, P.Y, Q.X, Q.Y)
 		}
 	}
 
