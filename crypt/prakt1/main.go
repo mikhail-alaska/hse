@@ -461,11 +461,12 @@ func AffineDecode(message,
 }
 
 func WorkPole() {
-	fmt.Println("Щас будет проверка я проверяю")
-	fmt.Println("Все многочлены представлены в виде [число, x, x^2, x^3...]Щас будет проверка я проверяю")
+	fmt.Println("Все многочлены представлены в виде [число, x, x^2, x^3...]")
 
-	p := 2
-	n := 3
+	fmt.Println("Введите через пробел числа p, n")
+	in := bufio.NewReader(os.Stdin)
+    var p, n int
+    fmt.Fscan(in, &p, &n)
 	fmt.Println("Размеры поля: p =", p, "n =", n)
 
 	pole := CreateGalua(p, n)
