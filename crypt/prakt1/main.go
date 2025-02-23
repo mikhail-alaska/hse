@@ -494,9 +494,12 @@ func WorkPole() {
 		fmt.Println(c+1, i[0])
 	}
 
-	obraz_chosen := 0
-	fmt.Println("выбран", obraz[obraz_chosen][0])
-	steps, ok := obraz[obraz_chosen][1].([][]interface{})
+
+	fmt.Println("Введите номер элемента с которым будем работать")
+	obrazChosen := 0
+    fmt.Fscan(in, &obrazChosen)
+	fmt.Println("Выбран", obraz[obrazChosen][0])
+	steps, ok := obraz[obrazChosen][1].([][]interface{})
 	if !ok {
 		fmt.Println("Ошибка приведения типа")
 		return
