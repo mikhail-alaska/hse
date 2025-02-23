@@ -283,6 +283,7 @@ func PolyDiv(a, b []int, p int) ([]int, error) {
 	}
 
 	for len(c1) >= len(c2) {
+        fmt.Println(11)
 		// Определяем разность степеней
 		degDiff := len(c1) - len(c2)
 		// Находим коэффициент, с которым нужно домножить c2
