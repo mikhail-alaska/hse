@@ -481,8 +481,10 @@ func WorkPole() {
 		fmt.Println(c+1, i)
 	}
 
-	nepr_chosen_number := 1
-	nepr := neprev[nepr_chosen_number-1]
+	fmt.Println("Введите номер элемента с которым будем работать")
+	neprChosenNumber := 1
+    fmt.Fscan(in, &neprChosenNumber)
+	nepr := neprev[neprChosenNumber-1]
 
 	fmt.Println("Вами выбран неприводимый элемент", nepr)
 
