@@ -261,7 +261,6 @@ func FracModule(p int, num float64) float64 {
 
 func PolyDiv(a, b []int, p int) ([]int, error) {
 
-            fmt.Println(11)
 	c1 := []int{}
 	c2 := []int{}
 	for _, i := range a {
@@ -284,6 +283,8 @@ func PolyDiv(a, b []int, p int) ([]int, error) {
 	}
 
 	for len(c1) >= len(c2) {
+
+            fmt.Println(11)
 		i := len(c1) - 1
 		j := len(c2) - 1
 		k := c1[i] / c2[j]
