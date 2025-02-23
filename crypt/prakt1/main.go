@@ -137,12 +137,13 @@ func Neprevodim(p, n int) ([][]int, error) {
 		poly := []int{}
 		for _, j := range a {
 
-            fmt.Println(11)
 			poly = append(poly, int(j-'0'))
 		}
 		for j := 0; j < p; j++ {
 			sum := 0
 			for l := 0; l < len(poly); l++ {
+
+            fmt.Println(11)
 				sum = sum + poly[l]*(Power(j, n+1-l-1))
 			}
 			if sum%p == 0 {
