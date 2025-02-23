@@ -33,6 +33,23 @@ func FindSlice(a []int, b [][]int) int {
 	return -1
 }
 
+func modInverse(a, p int) int {
+	t, newT := 0, 1
+	r, newR := p, a
+	for newR != 0 {
+		quotient := r / newR
+		t, newT = newT, t-quotient*newT
+		r, newR = newR, r-quotient*newR
+	}
+	if r > 1 {
+		panic("Элемент не обратим")
+	}
+	if t < 0 {
+		t += p
+	}
+	return t
+}
+
 func AsIntegerRatio(num float64) (int, int) {
 	a, b := num, 1.0
 	for a != math.Floor(a) {
@@ -283,14 +300,18 @@ func PolyDiv(a, b []int, p int) ([]int, error) {
 	}
 
 	for len(c1) >= len(c2) {
-        fmt.Println(11)
-		// Определяем разность степеней
 		degDiff := len(c1) - len(c2)
-		// Находим коэффициент, с которым нужно домножить c2
-		k := c1[len(c1)-1] / c2[len(c2)-1]
-		// Вычитаем k * x^(degDiff) * c2 из c1
-		for j := 0; j < len(c2); j++ {
-			c1[degDiff+j] -= c2[j] * k
+		// Находим обратный элемент для старшего коэффициента c2
+		inv := modInverse(c2[len(c2)-1], p)
+		// Вычисляем коэффициент k по модулю p
+		k := (c1[len(c1)-1] * inv) % p
+		// Вычитаем k * (c2, умноженный на x^(degDiff)) из c1
+		for i := 0; i < len(c2); i++ {
+			index := i + degDiff
+			c1[index] = (c1[index] - k*c2[i]) % p
+			if c1[index] < 0 {
+				c1[index] += p
+			}
 		}
 		c1 = RemoveZeroes(c1)
 	}
