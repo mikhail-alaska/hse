@@ -524,7 +524,10 @@ func WorkPole() {
 func WorkShifr() {
 	fmt.Println("Работа с шифром")
 
-	message := "alaska"
+	fmt.Println("введите сообщение")
+	in := bufio.NewReader(os.Stdin)
+    var message string
+    fmt.Fscan(in, &message)
 	alphabet := "123456abcdefghijklmnopqrstuvwxyz"
 
 	stepen := 0
