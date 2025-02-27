@@ -8,7 +8,6 @@ import (
     "os"
 )
 
-// Вариант хранения S-box, rCon и invSbox в виде глобальных массивов (или срезов)
 
 var sBox = [256]byte{
     0x63, 0x7C, 0x77, 0x7B, 0xF2, 0x6B, 0x6F, 0xC5, 0x30, 0x01, 0x67, 0x2B, 0xFE, 0xD7, 0xAB, 0x76,
@@ -54,15 +53,12 @@ var rCon = [18]byte{
     0x00, 0x00,
 }
 
-// keySize задаёт количество раундов шифрования (Nr) в зависимости от длины ключа AES
 var keySize = map[int]int{
     16: 10, // AES-128
     24: 12, // AES-192
     32: 14, // AES-256
 }
 
-// matrix – это просто 4x4 массив байт.
-// Удобно хранить состояние AES именно так.
 type matrix [4][4]byte
 
 // ---------- Функции умножения в поле GF(2^8) ----------
@@ -80,28 +76,22 @@ func mulBy03(b byte) byte {
 }
 
 func mulBy09(b byte) byte {
-    // 0x09 = (x^3 + 1) => 2*2*2(b) ^ b
     return mulBy02(mulBy02(mulBy02(b))) ^ b
 }
 
 func mulBy0b(b byte) byte {
-    // 0x0b = (x^3 + x + 1) => 2*2*2(b) ^ 2(b) ^ b
     return mulBy02(mulBy02(mulBy02(b))) ^ mulBy02(b) ^ b
 }
 
 func mulBy0d(b byte) byte {
-    // 0x0d = (x^3 + x^2 + 1)
     return mulBy02(mulBy02(mulBy02(b))) ^ mulBy02(mulBy02(b)) ^ b
 }
 
 func mulBy0e(b byte) byte {
-    // 0x0e = (x^3 + x^2 + x)
     return mulBy02(mulBy02(mulBy02(b))) ^ mulBy02(mulBy02(b)) ^ mulBy02(b)
 }
 
-// ---------- Преобразования для матриц/байт ----------
 func bytesToMatrix(src []byte) matrix {
-    // Перекладываем 16 байт (src) в 4x4 матрицу
     var m matrix
     for i := 0; i < 16; i++ {
         m[i/4][i%4] = src[i]
@@ -121,7 +111,6 @@ func matrixToBytes(m matrix) []byte {
     return out[:]
 }
 
-// XOR побайтно
 func xorBytes(a, b []byte) []byte {
     n := len(a)
     if len(b) < n {
@@ -134,7 +123,6 @@ func xorBytes(a, b []byte) []byte {
     return out
 }
 
-// Небольшая вспомогательная функция для замены 4 байт через sBox
 func switchSBox(arr []byte) []byte {
     for i := 0; i < len(arr); i++ {
         arr[i] = sBox[arr[i]]
@@ -142,9 +130,6 @@ func switchSBox(arr []byte) []byte {
     return arr
 }
 
-// ---------- Основные операции AES ----------
-
-// SubBytes
 func subBytes(state matrix) matrix {
     for i := 0; i < 4; i++ {
         for j := 0; j < 4; j++ {
@@ -154,7 +139,6 @@ func subBytes(state matrix) matrix {
     return state
 }
 
-// InvSubBytes
 func invSubBytes(state matrix) matrix {
     for i := 0; i < 4; i++ {
         for j := 0; j < 4; j++ {
@@ -164,10 +148,7 @@ func invSubBytes(state matrix) matrix {
     return state
 }
 
-// ShiftRows
 func shiftRows(state matrix) matrix {
-    // Перестановки по строкам
-    // строка 0 не меняется
     state[0][1], state[1][1], state[2][1], state[3][1] =
         state[1][1], state[2][1], state[3][1], state[0][1]
 
@@ -180,9 +161,7 @@ func shiftRows(state matrix) matrix {
     return state
 }
 
-// InvShiftRows
 func invShiftRows(state matrix) matrix {
-    // Обратная перестановка по строкам
     state[0][1], state[1][1], state[2][1], state[3][1] =
         state[3][1], state[0][1], state[1][1], state[2][1]
 
@@ -195,7 +174,6 @@ func invShiftRows(state matrix) matrix {
     return state
 }
 
-// MixColumns
 func mixColumns(s matrix) matrix {
     var temp matrix
     for i := 0; i < 4; i++ {
@@ -212,7 +190,6 @@ func mixColumns(s matrix) matrix {
     return temp
 }
 
-// InvMixColumns
 func invMixColumns(s matrix) matrix {
     var temp matrix
     for i := 0; i < 4; i++ {
@@ -229,7 +206,6 @@ func invMixColumns(s matrix) matrix {
     return temp
 }
 
-// addRoundKey
 func addRoundKey(state, roundKey matrix) matrix {
     for i := 0; i < 4; i++ {
         for j := 0; j < 4; j++ {
@@ -239,50 +215,39 @@ func addRoundKey(state, roundKey matrix) matrix {
     return state
 }
 
-// ---------- Расширение ключей (KeyExpansion) ----------
-
-// Возвращает массив из (Nr+1) матриц по 4x4, каждая из которых — Round Key
 func keyExpansion(key []byte) []matrix {
     length := len(key)
     if _, ok := keySize[length]; !ok {
         log.Fatalln("Ошибка длины ключа в его расширении:", length)
     }
-    Nk := length / 4        // кол-во 32-битных слов в ключе
-    Nr := keySize[length]   // кол-во раундов
+    Nk := length / 4        
+    Nr := keySize[length]   
     totalWords := 4 * (Nr + 1)
 
-    // Преобразуем ключ в срез "слов" (каждое слово = 4 байта)
     words := make([][]byte, Nk)
     for i := 0; i < Nk; i++ {
         words[i] = key[4*i : 4*(i+1)]
     }
 
-    // Генерируем остальные слова
     i := Nk
     for i < totalWords {
         temp := make([]byte, 4)
         copy(temp, words[i-1])
 
         if i%Nk == 0 {
-            // Сдвиг байтов (циклический)
             t0 := temp[0]
             temp = temp[1:]
             temp = append(temp, t0)
-            // Применяем sBox
             temp = switchSBox(temp)
-            // XOR с rCon[i/Nk]
             temp[0] ^= rCon[i/Nk]
         } else if Nk > 6 && (i%Nk == 4) {
-            // Для AES-256
             temp = switchSBox(temp)
         }
-        // XOR temp c words[i - Nk]
         out := xorBytes(temp, words[i-Nk])
         words = append(words, out)
         i++
     }
 
-    // Преобразуем words в список матриц
     var roundKeys []matrix
     idx := 0
     for j := 0; j < len(words)/4; j++ {
@@ -296,7 +261,6 @@ func keyExpansion(key []byte) []matrix {
     return roundKeys
 }
 
-// ---------- Шифрование одного блока (16 байт) ----------
 func encryptBlock(openText, key []byte) []byte {
     if len(openText) != 16 {
         log.Fatalln("Ошибка на длине блока текста")
@@ -309,10 +273,8 @@ func encryptBlock(openText, key []byte) []byte {
     roundKeys := keyExpansion(key)
     Nr := keySize[len(key)]
 
-    // Начальный раунд
     state = addRoundKey(state, roundKeys[0])
 
-    // Раунды 1..(Nr-1)
     for r := 1; r < Nr; r++ {
         state = subBytes(state)
         state = shiftRows(state)
@@ -320,7 +282,6 @@ func encryptBlock(openText, key []byte) []byte {
         state = addRoundKey(state, roundKeys[r])
     }
 
-    // Финальный раунд
     state = subBytes(state)
     state = shiftRows(state)
     state = addRoundKey(state, roundKeys[Nr])
@@ -328,7 +289,6 @@ func encryptBlock(openText, key []byte) []byte {
     return matrixToBytes(state)
 }
 
-// Расшифрование одного блока (16 байт)
 func decryptBlock(cipherText, key []byte) []byte {
     if len(cipherText) != 16 {
         log.Fatalln("Ошибка на длине блока зашифрованного текста")
@@ -341,12 +301,10 @@ func decryptBlock(cipherText, key []byte) []byte {
     roundKeys := keyExpansion(key)
     Nr := keySize[len(key)]
 
-    // Начинаем с последнего roundKey
     state = addRoundKey(state, roundKeys[Nr])
     state = invShiftRows(state)
     state = invSubBytes(state)
 
-    // Проходим раунды (Nr-1) .. 1
     for r := Nr - 1; r > 0; r-- {
         state = addRoundKey(state, roundKeys[r])
         state = invMixColumns(state)
@@ -354,15 +312,12 @@ func decryptBlock(cipherText, key []byte) []byte {
         state = invSubBytes(state)
     }
 
-    // Финальный раунд
     state = addRoundKey(state, roundKeys[0])
 
     return matrixToBytes(state)
 }
 
-// ---------- Подготовка/запуск шифрования/дешифрования файлика ----------
 
-// Шифрование файла
 func preparationAndEncrypt(inputFilePath, keyHex string) {
     file, err := os.Open(inputFilePath)
     if err != nil {
