@@ -489,7 +489,7 @@ func main() {
     // go run main.go 1 example1.txt 000011112222333344445555666677778888999011101010
     // go run main.go 2 example1.txt.crypted 000011112222333344445555666677778888999011101010
 
-    if len(os.Args) < 4 {
+    if len(os.Args) < 3 {
         fmt.Println("Usage: main <mode> <inputFile> <hexKey>")
         fmt.Println(" mode=1 => encrypt, mode=2 => decrypt")
         return
