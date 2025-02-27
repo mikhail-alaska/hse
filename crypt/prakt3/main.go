@@ -61,9 +61,7 @@ var keySize = map[int]int{
 
 type matrix [4][4]byte
 
-// ---------- Функции умножения в поле GF(2^8) ----------
 func mulBy02(b byte) byte {
-    // Если самый старший бит == 1, то после << 1 надо сделать XOR c 0x1B.
     var shifted = b << 1
     if (b & 0x80) != 0 {
         shifted ^= 0x1B
@@ -377,7 +375,6 @@ func preparationAndDecrypt(inputFilePath, keyHex string) {
 
     outputFileName := "decrypted-" + inputFilePath
 
-    // Разбиваем на блоки по 16 байт
     blocks := splitIntoBlocks(data, 16)
 
     k, err := hex.DecodeString(keyHex)
@@ -391,8 +388,6 @@ func preparationAndDecrypt(inputFilePath, keyHex string) {
         decrypted = append(decrypted, dec...)
     }
 
-    // Снимаем «паддинг»
-    // Из последнего блока берём последний байт как счётчик
     if len(decrypted) >= 16 {
         lastByte := decrypted[len(decrypted)-1]
         if lastByte > 0 && lastByte < 15 {
@@ -407,7 +402,6 @@ func preparationAndDecrypt(inputFilePath, keyHex string) {
     fmt.Println("Файл расшифрован:", outputFileName)
 }
 
-// Вспомогательная функция для разделения на блоки
 func splitIntoBlocks(data []byte, blockSize int) [][]byte {
     var result [][]byte
     for i := 0; i < len(data); i += blockSize {
@@ -420,13 +414,11 @@ func splitIntoBlocks(data []byte, blockSize int) [][]byte {
         result = append(result, chunk)
     }
     if len(result) == 0 {
-        // Если вдруг файл пуст
         result = append(result, []byte{})
     }
     return result
 }
 
-// ---------- Основная функция ----------
 
 func main() {
     // Пример использования.
@@ -435,7 +427,7 @@ func main() {
     // go run main.go 2 example1.txt.crypted 000011112222333344445555666677778888999011101010
 
     if len(os.Args) < 3 {
-        fmt.Println("Usage: main <mode> <inputFile> <hexKey>")
+        fmt.Println("Usage: main <mode> <inputFile>")
         fmt.Println(" mode=1 => encrypt, mode=2 => decrypt")
         return
     }
