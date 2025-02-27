@@ -326,12 +326,7 @@ def main(mode: int, input_file_path, key):
 
 if __name__ == "__main__":
     key = "000011112222333344445555666677778888999011101010"
-    # input_file_path = input()
-    # key = input()
     input_file_path = "example1.txt"
     main(1, input_file_path, key)
     input_file_path = "example1_txt.crypted"
     main(2, input_file_path, key)
-    # input_file_path = input()
-    # key = input()
-    # main(2, input_file_path, key)
