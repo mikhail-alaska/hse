@@ -423,8 +423,8 @@ func splitIntoBlocks(data []byte, blockSize int) [][]byte {
 func main() {
     // Пример использования.
     //
-    // go run main.go 1 example1.txt 000011112222333344445555666677778888999011101010
-    // go run main.go 2 example1.txt.crypted 000011112222333344445555666677778888999011101010
+    // go run main.go 1 example1.txt 
+    // go run main.go 2 example1.txt.crypted 
 
     if len(os.Args) < 3 {
         fmt.Println("Usage: main <mode> <inputFile>")
