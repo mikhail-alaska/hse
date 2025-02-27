@@ -497,7 +497,7 @@ func main() {
 
     mode := os.Args[1]
     inputFilePath := os.Args[2]
-    hexKey := os.Args[3]
+    hexKey := "000011112222333344445555666677778888999011101010"
 
     switch mode {
     case "1":
