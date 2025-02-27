@@ -330,15 +330,10 @@ func preparationAndEncrypt(inputFilePath, keyHex string) {
         log.Fatalln("Ошибка чтения файла:", err)
     }
 
-    // Генерируем имя выходного файла
     outputFileName := inputFilePath + ".crypted"
 
-    // Разбиваем на блоки по 16 байт + паддинг
     blocks := splitIntoBlocks(data, 16)
 
-    // Добавим «псевдо-PKCS7» (упрощённая логика из Python-версии):
-    // если последний блок меньше 16, дополняем нулями, 
-    // а в последний байт пишем число добавленных байтов (если оно < 15).
     last := blocks[len(blocks)-1]
     var counter byte
     for len(last) < 15 {
@@ -350,20 +345,17 @@ func preparationAndEncrypt(inputFilePath, keyHex string) {
     }
     blocks[len(blocks)-1] = last
 
-    // Переводим hex-ключ в []byte
     k, err := hex.DecodeString(keyHex)
     if err != nil {
         log.Fatalln("Неверный ключ (hex):", err)
     }
 
-    // Шифруем каждый блок
     var result []byte
     for _, blk := range blocks {
         enc := encryptBlock(blk, k)
         result = append(result, enc...)
     }
 
-    // Записываем результат
     err = os.WriteFile(outputFileName, result, 0644)
     if err != nil {
         log.Fatalln("Ошибка записи:", err)
@@ -371,7 +363,6 @@ func preparationAndEncrypt(inputFilePath, keyHex string) {
     fmt.Println("Файл зашифрован:", outputFileName)
 }
 
-// Дешифрование файла
 func preparationAndDecrypt(inputFilePath, keyHex string) {
     file, err := os.Open(inputFilePath)
     if err != nil {
@@ -384,8 +375,7 @@ func preparationAndDecrypt(inputFilePath, keyHex string) {
         log.Fatalln("Ошибка чтения файла:", err)
     }
 
-    // Условно генерируем имя выходного файла
-    outputFileName := "decrypted_" + inputFilePath
+    outputFileName := "decrypted-" + inputFilePath
 
     // Разбиваем на блоки по 16 байт
     blocks := splitIntoBlocks(data, 16)
