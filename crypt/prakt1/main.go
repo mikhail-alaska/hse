@@ -606,15 +606,14 @@ func main() {
 
 	in := bufio.NewReader(os.Stdin)
 
-    fmt.Println(`Введите "y", если надо свой алфавит, "n", если с стандартный алфавит:`, digits)
+	fmt.Println(`Введите "y", если надо свой алфавит, "n", если с стандартный алфавит:`, digits)
 	var alp string
 	fmt.Fscan(in, &alp)
 
 	switch alp {
 	case "y":
-		WorkPole()
-	case "n":
-		WorkShifr()
+		fmt.Fscan(in, &alp)
+        digits = alp
 	}
 	fmt.Println(`Введите "y", если надо поработать с полем и "n", если с шифром`)
 	var what string
