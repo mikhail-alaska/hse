@@ -22,7 +22,7 @@ def check_prime_ferma(n: int) -> bool:
 def check_prime(n: int) -> bool:
     if n == 2:
         return True
-    if n == 1 ir n%2==0:
+    if n == 1 or n%2==0:
         return False
     if not check_prime_ferma(n):
         return False
@@ -100,7 +100,9 @@ def decrypt(string: str, key: int, p:int, g:int) -> str:
     return result
 
 def read(filename: str) -> list:
-    with open(filename
+    with open(filename, "rb") as f:
+        file = f.read()
+    return list(file)
 
 def readfile(filename: str) -> List[int]:
     with open(filename, "rb") as f:
