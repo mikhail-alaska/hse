@@ -143,12 +143,10 @@ def main(mode: int):
         case 3:
             generate_open_key(277, 4, 2)
 
+
 if __name__ == "__main__":
     print("Выберите режим работы:\n1. Шифрование/дешифрование\n2.Генерация открытого ключа")
     mode = input()
 
-
-
-
-
-
+    main(1)
+    main(2)
