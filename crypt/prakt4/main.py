@@ -5,10 +5,10 @@ from typing import List
 def mod_pow(a: int, x: int, n: int) -> int:
     result = 1
     while x > 0:
-        if x & 1:
+        if x%2==1:
             result = (result * a) % n
-        x >>= 1
         a = (a * a) % n
+        x = x//2
     return result
 
 
