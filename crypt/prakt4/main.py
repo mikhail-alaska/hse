@@ -141,7 +141,7 @@ def main(mode: int):
             result, len_msg = decrypt(in_str, closed_key, p, g)
             write(result, "out_dec.txt", 1)
         case 3:
-
+            generate_open_key(277, 4, 2)
 
 if __name__ == "__main__":
     main()
