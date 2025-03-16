@@ -138,7 +138,7 @@ def main(mode: int):
             write(result, "out_en.txt", len_msg+1)
         case 2:
             in_str = read("out_en.txt")
-            result, len_msg = decrypt(in_str, closed_key, p, g)
+            result = decrypt(in_str, closed_key, p, g)
             write(result, "out_dec.txt", 1)
         case 3:
             generate_open_key(277, 4, 2)
