@@ -39,10 +39,10 @@ def test_ferma(n: int) -> bool:
     return check_prime_ferma(n)
 
 
-def extended_euclid(a: int, b: int) -> tuple[int, int, int]:
+def extended_euclid(a: int, b: int) -> int:
     if b == 0:
-        return (1, 0, a)
-    x1, y1, d = extended_euclid(b, a % b)
+        return a, 1, 0
+    gcd, x1, y1 = extended_euclid(b, a % b)
     x = y1
     y = x1 - (a // b) * y1
     return (x, y, d)
