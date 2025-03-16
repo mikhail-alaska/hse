@@ -104,12 +104,14 @@ def read(filename: str) -> list:
         file = f.read()
     return list(file)
 
-def readfile(filename: str) -> List[int]:
-    with open(filename, "rb") as f:
-        byte_array = list(f.read())
+def readfile(filename: str):
+    byte_array = []
+    with open(filename, "rb") as file:
+        byte = file.read(1)
+        while byte:
+            byte_array.append(int.from_bytes(byte, byteorder="big"))
+            byte = file.read(1)
     return byte_array
-
-
 def write(result: List[int], filename: str, len_msg: int):
     with open(filename, "wb") as f:
         for i in range(2 * len_msg):
