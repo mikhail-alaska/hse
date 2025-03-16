@@ -58,10 +58,11 @@ def encode_block(h: int, m: int, p: int, g: int, k: int) -> tuple[int, int]:
     return c1, c2
 
 
-def decode_block(p: int, c1: int, c2: int, key: int) -> int:
-    c1_inv = mod_pow(c1, p - 1 - key, p)
-    return (c2 * c1_inv) % p
-
+def decode_block(x: int, c1: int, c2: int, p: int) -> int:
+    c1 = mod_pow(c1, x, p)
+    c1 = extended_euclid(p, c1)[-1] %p
+    result = c2*c1 %p
+    return result
 
 def to_bin(normal_str: str) -> str:
     bin_str = "".join(f"{ord(b):08b}" for b in normal_str)
