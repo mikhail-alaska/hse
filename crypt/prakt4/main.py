@@ -123,38 +123,12 @@ closed_key = 0
 open_key = 0
 
 def main(mode: int):
+    match mode:
+        case 1:
+            in_str = read("in.txt")
+            open_key = generate_open_key(p, g, closed_key)
+        case 2:
 
-    mode = input(
-        "Выберите режим работы:\n1. шифрование/дешифрование\n2. генерация открытого ключа\n").strip()
-    if mode == "1":
-        in_filename = input("Введите имя входного файла: ")
-        out_filename = input("Введите имя выходного файла: ")
-        key = int(input("Введите ключ: "))
-
-        # Шифруем
-        byte_string = readfile(in_filename)
-        encrypted, len_msg = encrypt(byte_string, key, p, g)
-        write(encrypted, out_filename, len_msg)
-
-        # Для демонстрации сразу и расшифровываем (при желании можно убрать)
-        dec_filename = input("Введите имя файла для расшифрования: ")
-        dec_key = int(input("Введите ключ для расшифрования: "))
-        enc_data = readfile(out_filename)
-        decrypted_text = decrypt(enc_data, dec_key, p, g)
-        with open(dec_filename, "w", encoding="utf-8") as f:
-            f.write(decrypted_text)
-
-    elif mode == "2":
-        # Генерация открытого ключа (пример, детали не реализованы)
-        print("Генерация открытого ключа не реализована подробно.")
-        # Можно, к примеру:
-        # closed_key = int(input("Введите закрытый ключ: "))
-        # open_key = generate_open_key(p, g, closed_key)
-        # print("Открытый ключ:", open_key)
-
-    else:
-        print("Неверный режим")
-
-
+        case 3:
 if __name__ == "__main__":
     main()
