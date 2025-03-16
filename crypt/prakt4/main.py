@@ -65,7 +65,8 @@ def decode_block(x: int, c1: int, c2: int, p: int) -> int:
     return result
 
 def to_bin(normal_str: str) -> str:
-    bin_str = "".join(f"{ord(b):08b}" for b in normal_str)
+    normal_str = str(normal_str)
+    bin_str = "".join(format(ord(x), "b") for x in normal_str)
     return bin_str
 
 
