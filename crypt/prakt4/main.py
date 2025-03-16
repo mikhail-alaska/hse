@@ -45,17 +45,17 @@ def extended_euclid(a: int, b: int) -> int:
     gcd, x1, y1 = extended_euclid(b, a % b)
     x = y1
     y = x1 - (a // b) * y1
-    return (x, y, d)
+    return gcd, x, y
 
 
 def generate_open_key(p: int, g: int, k: int) -> int:
     return mod_pow(g, k, p)
 
 
-def encode_block(p: int, g: int, k: int, m: int) -> tuple[int, int]:
+def encode_block(h: int, m: int, p: int, g: int, k: int) -> tuple[int, int]:
     c1 = mod_pow(g, k, p)
-    c2 = (m * mod_pow(p, k, p)) % p
-    return (c1, c2)
+    c2 = m * mod_pow(h, k, p) % p
+    return c1, c2
 
 
 def decode_block(p: int, c1: int, c2: int, key: int) -> int:
