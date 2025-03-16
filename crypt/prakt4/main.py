@@ -119,7 +119,7 @@ def write(result: List[int], filename: str, len_msg: int):
             f.write(i.to_bytes(len_msg, "big"))
 
 p, g = 293, 4
-closed_key = 0
+closed_key = 5
 open_key = 0
 
 def main(mode: int):
@@ -127,8 +127,12 @@ def main(mode: int):
         case 1:
             in_str = read("in.txt")
             open_key = generate_open_key(p, g, closed_key)
+            result, len_msg = encrypt(in_str, open_key, p, g)
+            write(result, "out_en.txt", len_msg+1)
         case 2:
-
+            in_str = read("out_en.txt")
+            result, len_msg = decrypt(in_str, closed_key, p, g)
+            write(result, "out_en.txt", len_msg+1)
         case 3:
 if __name__ == "__main__":
     main()
