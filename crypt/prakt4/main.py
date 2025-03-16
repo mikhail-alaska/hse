@@ -99,6 +99,8 @@ def decrypt(string: str, key: int, p:int, g:int) -> str:
         result.append(decoded_block)
     return result
 
+def read(filename: str) -> list:
+    with open(filename
 
 def readfile(filename: str) -> List[int]:
     with open(filename, "rb") as f:
