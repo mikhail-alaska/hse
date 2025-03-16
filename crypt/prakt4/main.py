@@ -91,7 +91,7 @@ def decrypt(string: str, key: int, p:int, g:int) -> str:
     byte_string = string
     len_msg = ((p-2).bit_length() -1)//8
     result = []
-    for i in range(len_msg):
+    for i in range(0, len(byte_string), len_msg*2 +2):
         c1 = byte_string[2 * i]
         c2 = byte_string[2 * i + 1]
         decoded_block = decode_block(p, c1, c2, key)
