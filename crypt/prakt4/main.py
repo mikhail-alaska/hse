@@ -1,6 +1,7 @@
 import random
 from typing import List
 
+
 def mod_pow(a: int, x: int, n: int) -> int:
     result = 1
     while x > 0:
@@ -10,11 +11,13 @@ def mod_pow(a: int, x: int, n: int) -> int:
         a = (a * a) % n
     return result
 
+
 def check_prime_ferma(n: int) -> bool:
     tmp = mod_pow(2, n - 1, n)
     if tmp != 1:
         return False
     return True
+
 
 def check_prime(n: int) -> bool:
     if n == 2:
@@ -28,8 +31,10 @@ def check_prime(n: int) -> bool:
         d += 2
     return True
 
+
 def test_ferma(n: int) -> bool:
     return check_prime_ferma(n)
+
 
 def extended_euclid(a: int, b: int) -> tuple[int, int, int]:
     if b == 0:
@@ -39,25 +44,32 @@ def extended_euclid(a: int, b: int) -> tuple[int, int, int]:
     y = x1 - (a // b) * y1
     return (x, y, d)
 
+
 def generate_open_key(p: int, g: int, k: int) -> int:
     return mod_pow(g, k, p)
+
 
 def encode_block(p: int, g: int, k: int, m: int) -> tuple[int, int]:
     c1 = mod_pow(g, k, p)
     c2 = (m * mod_pow(p, k, p)) % p
     return (c1, c2)
 
+
 def decode_block(p: int, c1: int, c2: int, key: int) -> int:
     c1_inv = mod_pow(c1, p - 1 - key, p)
     return (c2 * c1_inv) % p
+
 
 def to_bin(normal_str: str) -> str:
     bin_str = "".join(f"{ord(b):08b}" for b in normal_str)
     return bin_str
 
+
 def from_bin(bin_str: str) -> str:
-    normal_str = ''.join(chr(int(bin_str[i:i+8], 2)) for i in range(0, len(bin_str), 8))
+    normal_str = ''.join(chr(int(bin_str[i:i+8], 2))
+                         for i in range(0, len(bin_str), 8))
     return normal_str
+
 
 def encrypt(byte_string: List[int], key: int, p: int, g: int) -> tuple[List[int], int]:
     len_msg = len(byte_string)
@@ -73,6 +85,7 @@ def encrypt(byte_string: List[int], key: int, p: int, g: int) -> tuple[List[int]
         encrypted.append(c1)
         encrypted.append(c2)
     return (encrypted, len_msg)
+
 
 def decrypt(byte_string: List[int], key: int, p: int, g: int) -> str:
     len_msg = len(byte_string) // 2
@@ -90,22 +103,26 @@ def decrypt(byte_string: List[int], key: int, p: int, g: int) -> str:
         result.pop()
     return bytes(result).decode('utf-8', errors='ignore')
 
+
 def readfile(filename: str) -> List[int]:
     with open(filename, "rb") as f:
         byte_array = list(f.read())
     return byte_array
+
 
 def write(result: List[int], filename: str, len_msg: int):
     with open(filename, "wb") as f:
         for i in range(2 * len_msg):
             f.write(result[i].to_bytes(1, 'big'))
 
+
 def main():
     p, g = 293, 4
     closed_key = 0
     open_key = 0
 
-    mode = input("Выберите режим работы:\n1. шифрование/дешифрование\n2. генерация открытого ключа\n").strip()
+    mode = input(
+        "Выберите режим работы:\n1. шифрование/дешифрование\n2. генерация открытого ключа\n").strip()
     if mode == "1":
         in_filename = input("Введите имя входного файла: ")
         out_filename = input("Введите имя выходного файла: ")
@@ -134,6 +151,7 @@ def main():
 
     else:
         print("Неверный режим")
+
 
 if __name__ == "__main__":
     main()
