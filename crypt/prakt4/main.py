@@ -92,8 +92,8 @@ def decrypt(string: str, key: int, p:int, g:int) -> str:
     len_msg = ((p-2).bit_length() -1)//8
     result = []
     for i in range(0, len(byte_string), len_msg*2 +2):
-        c1 = byte_string[2 * i]
-        c2 = byte_string[2 * i + 1]
+        c1 = int.from_bytes(byte_string[i:i+len_msg+1], "big")
+        c2 = int.from_bytes(byte_string[i+len_msg+1:i+len_msg*2+2], "big")
         decoded_block = decode_block(p, c1, c2, key)
         result.append(decoded_block)
     # Удаляем завершающие нули
