@@ -5,7 +5,7 @@ from typing import List
 def mod_pow(a: int, x: int, n: int) -> int:
     result = 1
     while x > 0:
-        if x%2==1:
+        if x % 2 == 1:
             result = (result * a) % n
         a = (a * a) % n
         x = x//2
@@ -22,7 +22,7 @@ def check_prime_ferma(n: int) -> bool:
 def check_prime(n: int) -> bool:
     if n == 2:
         return True
-    if n == 1 or n%2==0:
+    if n == 1 or n % 2 == 0:
         return False
     if not check_prime_ferma(n):
         return False
@@ -60,9 +60,10 @@ def encode_block(h: int, m: int, p: int, g: int, k: int) -> tuple[int, int]:
 
 def decode_block(x: int, c1: int, c2: int, p: int) -> int:
     c1 = mod_pow(c1, x, p)
-    c1 = extended_euclid(p, c1)[-1] %p
-    result = c2*c1 %p
+    c1 = extended_euclid(p, c1)[-1] % p
+    result = c2*c1 % p
     return result
+
 
 def to_bin(normal_str: str) -> str:
     normal_str = str(normal_str)
@@ -73,10 +74,11 @@ def to_bin(normal_str: str) -> str:
 def from_bin(bin_str: str) -> int:
     return int(bin, 2)
 
+
 def encrypt(byte_string: List[int], key: int, p: int, g: int) -> tuple[list[int], int]:
-    len_msg = ((p-2).bit_length() -1) //8
+    len_msg = ((p-2).bit_length() - 1) // 8
     byte_string.append(255)
-    byte_string.extend([0] * (len_msg - len(byte_string)%len_msg))
+    byte_string.extend([0] * (len_msg - len(byte_string) % len_msg))
     result = []
     for i in range(0, len(byte_string), len_msg):
         block = int.from_bytes(byte_string[i:i+len_msg], "big")
@@ -87,11 +89,11 @@ def encrypt(byte_string: List[int], key: int, p: int, g: int) -> tuple[list[int]
     return result, len_msg
 
 
-def decrypt(string: str, key: int, p:int, g:int) -> str:
+def decrypt(string: str, key: int, p: int, g: int) -> str:
     byte_string = string
-    len_msg = ((p-2).bit_length() -1)//8
+    len_msg = ((p-2).bit_length() - 1)//8
     result = []
-    for i in range(0, len(byte_string), len_msg*2 +2):
+    for i in range(0, len(byte_string), len_msg*2 + 2):
         c1 = int.from_bytes(byte_string[i:i+len_msg+1], "big")
         c2 = int.from_bytes(byte_string[i+len_msg+1:i+len_msg*2+2], "big")
         decoded_block = decode_block(key, c1, c2, p)
@@ -99,10 +101,12 @@ def decrypt(string: str, key: int, p:int, g:int) -> str:
         result.append(decoded_block)
     return result
 
+
 def read(filename: str) -> list:
     with open(filename, "rb") as f:
         file = f.read()
     return list(file)
+
 
 def readfile(filename: str):
     byte_array = []
@@ -113,14 +117,17 @@ def readfile(filename: str):
             byte = file.read(1)
     return byte_array
 
+
 def write(result: List[int], filename: str, len_msg: int):
     with open(filename, "wb") as f:
         for i in result:
             f.write(i.to_bytes(len_msg, "big"))
 
+
 p, g = 293, 4
 closed_key = 5
 open_key = 0
+
 
 def main(mode: int):
     match mode:
@@ -132,7 +139,9 @@ def main(mode: int):
         case 2:
             in_str = read("out_en.txt")
             result, len_msg = decrypt(in_str, closed_key, p, g)
-            write(result, "out_en.txt", len_msg+1)
+            write(result, "out_dec.txt", 1)
         case 3:
+
+
 if __name__ == "__main__":
     main()
