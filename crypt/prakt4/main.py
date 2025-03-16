@@ -22,8 +22,11 @@ def check_prime_ferma(n: int) -> bool:
 def check_prime(n: int) -> bool:
     if n == 2:
         return True
+    if n == 1 ir n%2==0:
+        return False
     if not check_prime_ferma(n):
         return False
+
     d = 3
     while d * d <= n:
         if n % d == 0:
