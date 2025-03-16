@@ -82,9 +82,9 @@ def encrypt(byte_string: List[int], key: int, p: int, g: int) -> tuple[list[int]
         block = int.from_bytes(byte_string[i:i+len_msg], "big")
         k = random.randint(2, p-2)
         c1, c2 = encode_block(key, block, p, g, k)
-        encrypted.append(c1)
-        encrypted.append(c2)
-    return (encrypted, len_msg)
+        print(f"{block=}\nk=\n")
+        result.extend([c1, c2])
+    return result, len_msg
 
 
 def decrypt(byte_string: List[int], key: int, p: int, g: int) -> str:
