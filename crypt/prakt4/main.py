@@ -79,8 +79,9 @@ def encrypt(byte_string: List[int], key: int, p: int, g: int) -> tuple[list[int]
     byte_string.extend([0] * (len_msg - len(byte_string)%len_msg))
     result = []
     for i in range(0, len(byte_string), len_msg):
-        block = byte_string[i]
-        c1, c2 = encode_block(p, g, k, block)
+        block = int.from_bytes(byte_string[i:i+len_msg], "big")
+        k = random.randint(2, p-2)
+        c1, c2 = encode_block(key, block, p, g, k)
         encrypted.append(c1)
         encrypted.append(c2)
     return (encrypted, len_msg)
