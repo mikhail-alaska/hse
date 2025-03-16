@@ -73,15 +73,12 @@ def to_bin(normal_str: str) -> str:
 def from_bin(bin_str: str) -> int:
     return int(bin, 2)
 
-def encrypt(byte_string: List[int], key: int, p: int, g: int) -> tuple[List[int], int]:
-    len_msg = len(byte_string)
-    # Случайный k
-    k = random.randint(2, p - 2)
-    # Добавим "разделитель" 255 и выравнивание нулями
+def encrypt(byte_string: List[int], key: int, p: int, g: int) -> tuple[list[int], int]:
+    len_msg = ((p-2).bit_length() -1) //8
     byte_string.append(255)
-    byte_string.extend([0] * (len_msg - len(byte_string)))
-    encrypted = []
-    for i in range(len_msg):
+    byte_string.extend([0] * (len_msg - len(byte_string)%len_msg))
+    result = []
+    for i in range(0, len(byte_string), len_msg):
         block = byte_string[i]
         c1, c2 = encode_block(p, g, k, block)
         encrypted.append(c1)
