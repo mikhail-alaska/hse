@@ -1,250 +1,228 @@
 package main
 
 import (
-    "bufio"
-    "fmt"
-    "math"
-    "math/rand"
-    "os"
-    "strconv"
-    "strings"
-    "time"
+	"fmt"
+	"io/ioutil"
+	"math/rand"
+	"os"
+	"time"
 )
 
-// modPow выполняет a^x mod n
+// modPow вычисляет (a^x) mod n с помощью быстрого возведения в степень.
 func modPow(a, x, n int) int {
-    result := 1
-    base := a % n
-    exp := x
-
-    for exp > 0 {
-        if exp&1 == 1 {
-            result = (result * base) % n
-        }
-        base = (base * base) % n
-        exp >>= 1
-    }
-    return result
+	result := 1
+	for x > 0 {
+		if x%2 == 1 {
+			result = (result * a) % n
+		}
+		a = (a * a) % n
+		x /= 2
+	}
+	return result
 }
 
-// checkPrimeFerma проверяет простоту числа n с помощью малой теоремы Ферма (основание 2)
+// checkPrimeFerma проверяет число по малой теореме Ферма.
 func checkPrimeFerma(n int) bool {
-    tmp := modPow(2, n-1, n)
-    return tmp == 1
+	return modPow(2, n-1, n) == 1
 }
 
-// checkPrime делает дополнительную проверку простоты
+// checkPrime выполняет проверку на простоту: сначала по Ферма, затем перебором.
 func checkPrime(n int) bool {
-    if n == 2 {
-        return true
-    }
-    if !checkPrimeFerma(n) {
-        return false
-    }
-    d := 3
-    limit := int(math.Sqrt(float64(n)))
-    for d <= limit {
-        if n%d == 0 {
-            return false
-        }
-        d += 2
-    }
-    return true
+	if n == 2 {
+		return true
+	}
+	if n == 1 || n%2 == 0 {
+		return false
+	}
+	if !checkPrimeFerma(n) {
+		return false
+	}
+	for d := 3; d*d <= n; d += 2 {
+		if n%d == 0 {
+			return false
+		}
+	}
+	return true
 }
 
-// testFerma просто вызывает checkPrimeFerma
-func testFerma(n int) bool {
-    return checkPrimeFerma(n)
-}
-
-// extendedEuclid возвращает (x, y, d), такие что a*x + b*y = d = gcd(a, b)
+// extendedEuclid возвращает (gcd, x, y) такие, что: a*x + b*y = gcd.
 func extendedEuclid(a, b int) (int, int, int) {
-    if b == 0 {
-        return 1, 0, a
-    }
-    x1, y1, d := extendedEuclid(b, a%b)
-    x := y1
-    y := x1 - (a/b)*y1
-    return x, y, d
+	if b == 0 {
+		return a, 1, 0
+	}
+	gcd, x1, y1 := extendedEuclid(b, a%b)
+	x := y1
+	y := x1 - (a/b)*y1
+	return gcd, x, y
 }
 
-// generateOpenKey рассчитывает g^k mod p
+// generateOpenKey вычисляет открытый ключ: g^k mod p.
 func generateOpenKey(p, g, k int) int {
-    return modPow(g, k, p)
+	return modPow(g, k, p)
 }
 
-// encodeBlock шифрует один блок (байт) m
-func encodeBlock(p, g, k, m int) (int, int) {
-    c1 := modPow(g, k, p)
-    c2 := (m * modPow(p, k, p)) % p
-    return c1, c2
+// encodeBlock шифрует блок m с помощью параметров h, p, g и случайного k.
+func encodeBlock(h, m, p, g, k int) (int, int) {
+	c1 := modPow(g, k, p)
+	c2 := (m * modPow(h, k, p)) % p
+	return c1, c2
 }
 
-// decodeBlock расшифровывает один блок
-func decodeBlock(p, c1, c2, key int) int {
-    c1Inv := modPow(c1, p-1-key, p)
-    return (c2 * c1Inv) % p
+// decodeBlock дешифрует блок, вычисляя обратный элемент и восстанавливая исходное сообщение.
+func decodeBlock(x, c1, c2, p int) int {
+	// Возводим c1 в степень закрытого ключа x по модулю p.
+	c1Exp := modPow(c1, x, p)
+	// Вычисляем модульное обратное к c1Exp по модулю p с помощью расширенного алгоритма Евклида.
+	_, _, inv := extendedEuclid(p, c1Exp)
+	// Приводим к положительному остатку.
+	inv = ((inv % p) + p) % p
+	result := (c2 * inv) % p
+	return result
 }
 
-// encrypt шифрует массив байтов (каждый элемент byte_string — это int от 0 до 255)
-func encrypt(byteString []int, key, p, g int) ([]int, int) {
-    lenMsg := len(byteString)
-    rand.Seed(time.Now().UnixNano())
-    // Случайный k
-    k := rand.Intn(p-3) + 2 // randint(2, p-2) эквивалент
-
-    // Добавим 255 и заполним нулями
-    byteString = append(byteString, 255)
-    for len(byteString) < 2*lenMsg {
-        byteString = append(byteString, 0)
-    }
-
-    var encrypted []int
-    for i := 0; i < lenMsg; i++ {
-        block := byteString[i]
-        c1, c2 := encodeBlock(p, g, k, block)
-        encrypted = append(encrypted, c1, c2)
-    }
-    return encrypted, lenMsg
+// readFileBytes читает содержимое файла и возвращает его как срез байт.
+func readFileBytes(filename string) ([]byte, error) {
+	return ioutil.ReadFile(filename)
 }
 
-// decrypt расшифровывает массив int (каждые два числа — это c1, c2)
-func decrypt(byteString []int, key, p, g int) string {
-    lenMsg := len(byteString) / 2
-    var result []int
-
-    for i := 0; i < lenMsg; i++ {
-        c1 := byteString[2*i]
-        c2 := byteString[2*i+1]
-        decoded := decodeBlock(p, c1, c2, key)
-        result = append(result, decoded)
-    }
-
-    // Убираем завершающие нули
-    for len(result) > 0 && result[len(result)-1] == 0 {
-        result = result[:len(result)-1]
-    }
-    // Убираем 255, если есть
-    if len(result) > 0 && result[len(result)-1] == 255 {
-        result = result[:len(result)-1]
-    }
-
-    // Превращаем в байты и декодируем как utf-8
-    bytesRes := make([]byte, len(result))
-    for i := 0; i < len(result); i++ {
-        bytesRes[i] = byte(result[i])
-    }
-    return string(bytesRes)
+// writeFileBytes записывает данные в файл.
+func writeFileBytes(filename string, data []byte) error {
+	return ioutil.WriteFile(filename, data, 0644)
 }
 
-// readFile читает весь файл как []int (каждый байт — int)
-func readFile(filename string) []int {
-    data, err := os.ReadFile(filename)
-    if err != nil {
-        fmt.Println("Ошибка чтения файла:", err)
-        return nil
-    }
-    result := make([]int, len(data))
-    for i, b := range data {
-        result[i] = int(b)
-    }
-    return result
+// encrypt принимает исходный срез байт, шифрует его и возвращает зашифрованные числа и размер блока.
+func encrypt(byteString []byte, key, p, g int) ([]int, int) {
+	// Вычисляем размер блока: ((p-2).bit_length() - 1) // 8.
+	bitLen := 0
+	temp := p - 2
+	for temp > 0 {
+		bitLen++
+		temp /= 2
+	}
+	lenMsg := (bitLen - 1) / 8
+	if lenMsg < 1 {
+		lenMsg = 1
+	}
+
+	// Добавляем разделитель (255) и дополняем нулями до кратности lenMsg.
+	byteString = append(byteString, 255)
+	padding := lenMsg - (len(byteString) % lenMsg)
+	for i := 0; i < padding; i++ {
+		byteString = append(byteString, 0)
+	}
+
+	result := []int{}
+	// Шифруем блок за блоком.
+	for i := 0; i < len(byteString); i += lenMsg {
+		blockInt := 0
+		for j := 0; j < lenMsg; j++ {
+			blockInt = (blockInt << 8) | int(byteString[i+j])
+		}
+		// Генерируем случайное k в диапазоне [2, p-2].
+		k := rand.Intn(p-3) + 2
+		c1, c2 := encodeBlock(key, blockInt, p, g, k)
+		fmt.Printf("block=%d\nk=%d\n", blockInt, k)
+		result = append(result, c1, c2)
+	}
+	return result, lenMsg
 }
 
-// writeFile записывает первые 2*lenMsg элементов из result в файл
-func writeFile(result []int, filename string, lenMsg int) {
-    f, err := os.Create(filename)
-    if err != nil {
-        fmt.Println("Ошибка создания файла:", err)
-        return
-    }
-    defer f.Close()
-
-    writer := bufio.NewWriter(f)
-    countToWrite := 2 * lenMsg
-    if countToWrite > len(result) {
-        countToWrite = len(result)
-    }
-
-    for i := 0; i < countToWrite; i++ {
-        b := make([]byte, 1)
-        b[0] = byte(result[i])
-        writer.Write(b)
-    }
-    writer.Flush()
+// decrypt принимает зашифрованные данные, дешифрует их и возвращает срез исходных чисел.
+func decrypt(byteString []byte, key, p, g int) []int {
+	bitLen := 0
+	temp := p - 2
+	for temp > 0 {
+		bitLen++
+		temp /= 2
+	}
+	lenMsg := (bitLen - 1) / 8
+	if lenMsg < 1 {
+		lenMsg = 1
+	}
+	result := []int{}
+	// Каждый зашифрованный блок занимает 2*(lenMsg+1) байт.
+	blockSize := 2 * (lenMsg + 1)
+	for i := 0; i < len(byteString); i += blockSize {
+		c1 := 0
+		for j := 0; j < lenMsg+1; j++ {
+			c1 = (c1 << 8) | int(byteString[i+j])
+		}
+		c2 := 0
+		for j := 0; j < lenMsg+1; j++ {
+			c2 = (c2 << 8) | int(byteString[i+lenMsg+1+j])
+		}
+		decodedBlock := decodeBlock(key, c1, c2, p)
+		fmt.Printf("decodedBlock=%d\nc1=%d\nc2=%d\n", decodedBlock, c1, c2)
+		result = append(result, decodedBlock)
+	}
+	return result
 }
 
-// main аналогичен python-коду: предлагает режим работы и т.д.
+// writeIntsToFile записывает срез целых чисел в файл, каждое число представляется в виде lenMsg байт (big-endian).
+func writeIntsToFile(result []int, filename string, lenMsg int) error {
+	data := []byte{}
+	for _, num := range result {
+		b := make([]byte, lenMsg)
+		for i := lenMsg - 1; i >= 0; i-- {
+			b[i] = byte(num & 0xFF)
+			num >>= 8
+		}
+		data = append(data, b...)
+	}
+	return writeFileBytes(filename, data)
+}
+
 func main() {
-    reader := bufio.NewReader(os.Stdin)
-    p := 293
-    g := 4
-    closedKey := 0
-    openKey := 0
+	rand.Seed(time.Now().UnixNano())
 
-    fmt.Println("Выберите режим работы:")
-    fmt.Println("1. шифрование/дешифрование")
-    fmt.Println("2. генерация открытого ключа")
-    modeLine, _ := reader.ReadString('\n')
-    modeLine = strings.TrimSpace(modeLine)
+	// Параметры шифрования
+	p := 293
+	g := 4
+	closedKey := 5
+	openKey := 0
 
-    switch modeLine {
-    case "1":
-        fmt.Print("Введите имя входного файла: ")
-        inFilename, _ := reader.ReadString('\n')
-        inFilename = strings.TrimSpace(inFilename)
+	fmt.Println("Выберите режим работы:")
+	fmt.Println("1. Шифрование/дешифрование")
+	fmt.Println("2. Генерация открытого ключа")
 
-        fmt.Print("Введите имя выходного файла: ")
-        outFilename, _ := reader.ReadString('\n')
-        outFilename = strings.TrimSpace(outFilename)
+	var mode int
+	_, err := fmt.Scan(&mode)
+	if err != nil {
+		fmt.Println("Ошибка ввода:", err)
+		os.Exit(1)
+	}
 
-        fmt.Print("Введите ключ: ")
-        keyLine, _ := reader.ReadString('\n')
-        keyLine = strings.TrimSpace(keyLine)
-        key, _ := strconv.Atoi(keyLine)
-
-        // Шифруем
-        byteString := readFile(inFilename)
-        encrypted, lenMsg := encrypt(byteString, key, p, g)
-        writeFile(encrypted, outFilename, lenMsg)
-
-        // Для демонстрации сразу расшифровываем
-        fmt.Print("Введите имя файла для расшифрования: ")
-        decFilename, _ := reader.ReadString('\n')
-        decFilename = strings.TrimSpace(decFilename)
-
-        fmt.Print("Введите ключ для расшифрования: ")
-        decKeyLine, _ := reader.ReadString('\n')
-        decKeyLine = strings.TrimSpace(decKeyLine)
-        decKey, _ := strconv.Atoi(decKeyLine)
-
-        encData := readFile(outFilename)
-        decryptedText := decrypt(encData, decKey, p, g)
-
-        // Запишем расшифрованный текст в decFilename (как UTF-8)
-        if err := os.WriteFile(decFilename, []byte(decryptedText), 0644); err != nil {
-            fmt.Println("Ошибка при записи расшифрованного текста:", err)
-        }
-
-    case "2":
-        // Пример генерации открытого ключа
-        // (подробности реализации зависят от ваших потребностей)
-        fmt.Println("Генерация открытого ключа (пример)")
-
-        fmt.Print("Введите закрытый ключ: ")
-        closedKeyLine, _ := reader.ReadString('\n')
-        closedKeyLine = strings.TrimSpace(closedKeyLine)
-        cKey, err := strconv.Atoi(closedKeyLine)
-        if err != nil {
-            fmt.Println("Ошибка ввода:", err)
-            return
-        }
-        closedKey = cKey
-
-        openKey = generateOpenKey(p, g, closedKey)
-        fmt.Println("Открытый ключ:", openKey)
-
-    default:
-        fmt.Println("Неверный режим")
-    }
+	switch mode {
+	case 1:
+		// Шифрование
+		inBytes, err := readFileBytes("in.txt")
+		if err != nil {
+			fmt.Println("Ошибка чтения in.txt:", err)
+			return
+		}
+		openKey = generateOpenKey(p, g, closedKey)
+		encrypted, lenMsg := encrypt(inBytes, openKey, p, g)
+		err = writeIntsToFile(encrypted, "out_en.txt", lenMsg+1)
+		if err != nil {
+			fmt.Println("Ошибка записи out_en.txt:", err)
+			return
+		}
+		// Дешифрование
+		encBytes, err := readFileBytes("out_en.txt")
+		if err != nil {
+			fmt.Println("Ошибка чтения out_en.txt:", err)
+			return
+		}
+		decrypted := decrypt(encBytes, closedKey, p, g)
+		err = writeIntsToFile(decrypted, "out_dec.txt", 1)
+		if err != nil {
+			fmt.Println("Ошибка записи out_dec.txt:", err)
+			return
+		}
+	case 2:
+		// Генерация открытого ключа
+		fmt.Println("Открытый ключ:", generateOpenKey(p, g, closedKey))
+	default:
+		fmt.Println("Неверный режим")
+	}
 }
