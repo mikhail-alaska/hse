@@ -112,10 +112,11 @@ def readfile(filename: str):
             byte_array.append(int.from_bytes(byte, byteorder="big"))
             byte = file.read(1)
     return byte_array
+
 def write(result: List[int], filename: str, len_msg: int):
     with open(filename, "wb") as f:
-        for i in range(2 * len_msg):
-            f.write(result[i].to_bytes(1, 'big'))
+        for i in result:
+            f.write(i.to_bytes(len_msg, "big"))
 
 
 def main():
