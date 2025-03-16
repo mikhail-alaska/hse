@@ -88,7 +88,8 @@ def encrypt(byte_string: List[int], key: int, p: int, g: int) -> tuple[list[int]
 
 
 def decrypt(string: str, key: int, p:int, g:int) -> str:
-    len_msg = len(byte_string) // 2
+    byte_string = string
+    len_msg = ((p-2).bit_length() -1)//8
     result = []
     for i in range(len_msg):
         c1 = byte_string[2 * i]
