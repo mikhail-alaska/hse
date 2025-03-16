@@ -118,11 +118,11 @@ def write(result: List[int], filename: str, len_msg: int):
         for i in result:
             f.write(i.to_bytes(len_msg, "big"))
 
+p, g = 293, 4
+closed_key = 0
+open_key = 0
 
-def main():
-    p, g = 293, 4
-    closed_key = 0
-    open_key = 0
+def main(mode: int):
 
     mode = input(
         "Выберите режим работы:\n1. шифрование/дешифрование\n2. генерация открытого ключа\n").strip()
