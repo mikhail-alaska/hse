@@ -87,7 +87,7 @@ def encrypt(byte_string: List[int], key: int, p: int, g: int) -> tuple[list[int]
     return result, len_msg
 
 
-def decrypt(byte_string: List[int], key: int, p: int, g: int) -> str:
+def decrypt(string: str, key: int, p:int, g:int) -> str:
     len_msg = len(byte_string) // 2
     result = []
     for i in range(len_msg):
