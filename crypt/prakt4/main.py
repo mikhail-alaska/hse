@@ -70,11 +70,8 @@ def to_bin(normal_str: str) -> str:
     return bin_str
 
 
-def from_bin(bin_str: str) -> str:
-    normal_str = ''.join(chr(int(bin_str[i:i+8], 2))
-                         for i in range(0, len(bin_str), 8))
-    return normal_str
-
+def from_bin(bin_str: str) -> int:
+    return int(bin, 2)
 
 def encrypt(byte_string: List[int], key: int, p: int, g: int) -> tuple[List[int], int]:
     len_msg = len(byte_string)
