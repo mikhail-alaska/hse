@@ -97,13 +97,7 @@ def decrypt(string: str, key: int, p:int, g:int) -> str:
         decoded_block = decode_block(key, c1, c2, p)
         print(f"{decoded_block=}\n{c1=}\n{c2=}\n")
         result.append(decoded_block)
-    # Удаляем завершающие нули
-    while result and result[-1] == 0:
-        result.pop()
-    # Удаляем 255, если он есть
-    if result and result[-1] == 255:
-        result.pop()
-    return bytes(result).decode('utf-8', errors='ignore')
+    return result
 
 
 def readfile(filename: str) -> List[int]:
