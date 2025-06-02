@@ -30,7 +30,6 @@ type Path struct {
 }
 
 func main() {
-	// -------------- ВСТАВЛЕНО ДЛЯ ПОКАЗА ПОЛЬЗОВАТЕЛЮ --------------
 	fmt.Println("Что будет происходить:")
 	fmt.Println("1) Программа сгенерирует случайные информационные биты длины k =", k)
 	fmt.Println("2) Построит полярный код (матрица Арикана), закодирует биты, выполнит BPSK-модуляцию")
@@ -39,11 +38,8 @@ func main() {
 	fmt.Println()
 	fmt.Println("Нажмите Enter, чтобы запустить симуляцию.")
 	bufio.NewReader(os.Stdin).ReadString('\n')
-	// ----------------------------------------------------------------
 
-	rand.Seed(time.Now().UnixNano())
 
-	// Построим множества F (замороженные индексы) и A (информационные позиции)
 	F := make(map[int]struct{}, len(frozenPositions))
 	for _, idx := range frozenPositions {
 		F[idx] = struct{}{}
