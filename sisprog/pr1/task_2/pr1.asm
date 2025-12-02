@@ -44,7 +44,7 @@ inner_loop:
     imul     rcx, 4
     mov     [rsi + rcx], eax
 
-    inc     r10d            ; j++
+    inc     r10d
     jmp     inner_loop
 
 .next_row:
