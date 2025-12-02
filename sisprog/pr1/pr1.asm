@@ -30,11 +30,9 @@ loop_start:
 
     mov [result], r8d
     
-    mov eax, [result]
-    
 
 exit:
     mov rax, 60
-    mov edi, eax
+    mov edi, r8d
     syscall
 
