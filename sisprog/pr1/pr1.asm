@@ -33,6 +33,6 @@ loop_start:
 
 exit:
     mov rax, 60
-    mov edi, result
+    mov edi, [result]
     syscall
 
