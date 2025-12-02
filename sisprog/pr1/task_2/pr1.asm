@@ -1,6 +1,7 @@
-;   RDI = src
-;   RSI = dst
-;   EDX = n
+; RDI = src
+; RSI = dst
+; EDX = n = r8d
+; r9d = i
 
 format ELF64
 
@@ -9,11 +10,8 @@ public rotate_clockwise
 section '.text' executable
 
 rotate_clockwise:
-    ; rdi - src
-    ; rsi - dst
-    ; edx - n
-    mov     r8d, edx        ; r8d = n
-    xor     r9d, r9d        ; r9d = i = 0
+    mov     r8d, edx
+    xor     r9d, r9d
 
 outer_loop:
     cmp     r9d, r8d        ; if (i >= n) -> done
