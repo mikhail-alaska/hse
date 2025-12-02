@@ -18,7 +18,7 @@ static void print_matrix(int32_t **arr, size_t n, const char *title) {
 }
 
 int main(void) {
-  srand((unsigned)time(NULL));
+  srand(time(NULL));
 
   size_t rand_max;
   printf("Введите размер матрицы > ");
