@@ -48,7 +48,7 @@ inner_loop:
     jmp     inner_loop
 
 .next_row:
-    inc     r9d             ; i++
+    inc     r9d
     jmp     outer_loop
 
 .done:
