@@ -29,7 +29,7 @@ loop_start:
 
     mov rax, 1
     mov rdi, 1
-    movzx rsi, r8d
+    mov rsi, r8d
     mov rdx, 1
     syscall
     
