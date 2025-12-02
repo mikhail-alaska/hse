@@ -29,6 +29,7 @@ loop_start:
 
     mov [result], r8d
     
+    mov eax, [result]
     
 exit:
 
