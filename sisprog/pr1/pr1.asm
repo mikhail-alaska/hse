@@ -10,6 +10,7 @@ _start:
     mov rbx, 1
     mov rcx, msg
     mov rdx, len
+    syscall
     call exit
     
 exit:
