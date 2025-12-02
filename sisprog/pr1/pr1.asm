@@ -2,6 +2,8 @@ format ELF64
 
 public _start
 
+section '.data' writable
+
 msg db "hello world", 0
 len = $-msg
 
