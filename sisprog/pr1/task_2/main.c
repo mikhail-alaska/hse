@@ -31,8 +31,8 @@ int main(void) {
 
   int32_t min_val, max_val;
   printf("Введите минимальное значение для случайных чисел в матрице > ");
-  if (scanf("%" SCNd32 " %" SCNd32, &min_val, &max_val) != 2) {
-    fprintf(stderr, "Invalid range input\n");
+  if (scanf("%zu", &min_val) != 1) {
+    fprintf(stderr, "Invalid rand_max\n");
     return 1;
   }
   if (min_val > max_val) {
