@@ -16,15 +16,17 @@ _start:
     mov ecx, len
     xor r8d, r8d
     mov bx, 3
-    ; способ принтить
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, msg
-    mov rdx, len
-    syscall
     call exit
     
 exit:
     mov rax, 60
     mov rdi, 0
+    syscall
+
+
+    ; способ принтить
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, msg
+    mov rdx, len
     syscall
