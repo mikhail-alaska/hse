@@ -15,7 +15,8 @@ _start:
     mov ecx, len
     xor r8d, r8d
     mov bx, 3
-    call exit
+
+loop_start:
     
 exit:
     mov rax, 60
