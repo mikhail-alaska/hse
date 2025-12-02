@@ -4,7 +4,7 @@ public _start
 
 section '.data' writable
 
-array   dw  5, 7, 10, 3, 0, 12, 8, 1, 2, 4
+array dw 5, 7, 10, 3, 0, 12, 8, 1, 2, 4
 len = $-array
 
 section '.text' executable
