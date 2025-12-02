@@ -16,13 +16,13 @@ rotate_clockwise:
 
 outer_loop:
     cmp r9d, r8d
-    jge .done
+    jge done
 
     xor r10d, r10d
 
 inner_loop:
     cmp r10d, r8d
-    jge .next_row
+    jge next_row
 
     mov r11d, r8d
     dec r11d
@@ -47,9 +47,9 @@ inner_loop:
     inc r10d
     jmp inner_loop
 
-.next_row:
+next_row:
     inc r9d
     jmp outer_loop
 
-.done:
+done:
     ret
