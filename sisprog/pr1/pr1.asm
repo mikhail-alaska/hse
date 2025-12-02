@@ -7,6 +7,8 @@ section '.data' writable
 msg db "hello world", 0
 len = $-msg
 
+section '.text' executable
+
 _start:
     mov rax, 1
     mov rdi, 1
