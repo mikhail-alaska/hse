@@ -9,6 +9,7 @@ _start:
     mov rax, 4
     mov rbx, 1
     mov rcx, msg
+    mov rdx, len
     call exit
     
 exit:
