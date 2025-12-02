@@ -12,6 +12,9 @@ section '.text' executable
 
 _start:
 
+    mov rdi, array
+    mov ecx, len
+    xox r8d, r8d
     ; способ принтить
     mov rax, 1
     mov rdi, 1
