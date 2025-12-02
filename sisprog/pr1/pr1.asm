@@ -32,7 +32,7 @@ loop_start:
     mov rax, 1
     mov rdi, 1
     mov rsi, result
-    mov rdx, 1
+    mov rdx, 4
     syscall
     
 exit:
