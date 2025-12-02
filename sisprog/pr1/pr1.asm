@@ -11,7 +11,6 @@ result dd 0
 section '.text' executable
 
 _start:
-
     mov rdi, array
     mov ecx, len
     xor r8d, r8d
