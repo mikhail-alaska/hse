@@ -35,6 +35,6 @@ loop_start:
 
 exit:
     mov rax, 60
-    mov edi, 11
+    mov edi, r8d
     syscall
 
