@@ -21,7 +21,7 @@ int main(void) {
   srand((unsigned)time(NULL));
 
   size_t rand_max;
-  printf("Input rand_max for matrix size (N in [1..rand_max]) > ");
+  printf("Введите размер матрицы > ");
   if (scanf("%zu", &rand_max) != 1 || rand_max == 0) {
     fprintf(stderr, "Invalid rand_max\n");
     return 1;
