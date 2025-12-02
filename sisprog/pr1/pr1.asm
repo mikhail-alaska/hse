@@ -27,9 +27,11 @@ loop_start:
     add rdi, 2
     loop loop_start
 
+    mov [result], r8d
+    
     mov rax, 1
     mov rdi, 1
-    mov rsi, r8d
+    mov rsi, result
     mov rdx, 1
     syscall
     
