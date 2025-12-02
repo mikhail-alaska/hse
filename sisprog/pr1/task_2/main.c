@@ -20,14 +20,13 @@ static void print_matrix(int32_t **arr, size_t n, const char *title) {
 int main(void) {
   srand(time(NULL));
 
-  size_t rand_max;
+  size_t n;
   printf("Введите размер матрицы > ");
-  if (scanf("%zu", &rand_max) != 1 || rand_max == 0) {
+  if (scanf("%zu", &n) != 1 || n == 0) {
     fprintf(stderr, "Invalid rand_max\n");
     return 1;
   }
 
-  size_t n = rand_max;
 
   int32_t min_val, max_val;
   printf("Введите минимальное значение для случайных чисел в матрице > ");
