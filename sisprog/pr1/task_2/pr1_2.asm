@@ -6,11 +6,11 @@
 
 format ELF64
 
-public rotate_clockwise
+public task
 
 section '.text' executable
 
-rotate_clockwise:
+task:
     mov r8d, edx
     xor r9d, r9d
 
