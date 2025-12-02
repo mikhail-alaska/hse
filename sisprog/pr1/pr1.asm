@@ -7,5 +7,5 @@ _start:
     
 exit:
     mov rax, 1
-    mov rbx, 5
+    mov rbx, 55
     int 0x80
