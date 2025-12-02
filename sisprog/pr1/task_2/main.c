@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-void task(int32_t **arr, int32_t **dst, size_t n);
+void task(int32_t **arr, int32_t **dst, int32_t n);
 
-static void print_matrix(int32_t **arr, size_t n, const char *title) {
+static void print_matrix(int32_t **arr, int32_t n, const char *title) {
   printf("%s (n = %zu):\n", title, n);
   for (size_t i = 0; i < n; ++i) {
     for (size_t j = 0; j < n; ++j) {
