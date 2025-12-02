@@ -6,6 +6,6 @@ _start:
     call exit
     
 exit:
-    mov rax, 1
+    mov rax, 60
     mov rbx, 55
     syscall
