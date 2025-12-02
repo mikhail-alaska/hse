@@ -29,13 +29,15 @@ loop_start:
 
     mov [result], r8d
     
+    
+exit:
+
     mov rax, 1
     mov rdi, 1
     mov rsi, result
     mov rdx, 4
     syscall
-    
-exit:
+
 
     mov rax, 60
     mov rdi, 0
