@@ -20,7 +20,7 @@ static void print_matrix(int32_t **arr, int32_t n, const char *title) {
 int main(void) {
   srand(time(NULL));
 
-  int32_t n;
+  uint32_t n;
   printf("Введите размер матрицы > ");
   if (scanf("%d", &n) != 1 || n == 0) {
     fprintf(stderr, "Invalid rand_max\n");
@@ -59,11 +59,11 @@ int main(void) {
     return 1;
   }
 
-  for (size_t i = 0; i < n; ++i) {
+  for (uint32_t i = 0; i < n; ++i) {
     array[i] = calloc(n, sizeof(int32_t));
     if (!array[i]) {
-      fprintf(stderr, "Allocation failed (row %zu)\n", i);
-      for (size_t k = 0; k < i; ++k) {
+      fprintf(stderr, "Allocation failed (row %d)\n", i);
+      for (uint32_t k = 0; k < i; ++k) {
         free(array[k]);
       }
       free(array);
