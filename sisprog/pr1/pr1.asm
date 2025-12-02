@@ -6,7 +6,7 @@ section '.data' writable
 
 array dw 5, 7, 10, 3, 0, 12, 8, 1, 2, 4
 len = 10
-result dd 0
+result dd 10
 
 section '.text' executable
 
