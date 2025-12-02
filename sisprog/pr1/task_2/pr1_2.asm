@@ -10,12 +10,8 @@ public task
 section '.text' executable
 
 task:
-    ; RDI = src (int32_t**)
-    ; RSI = dst (int32_t**)
-    ; RDX = n
-    
-    mov r8, rdx        ; n
-    xor r9, r9         ; i = 0
+    mov r8, rdx
+    xor r9, r9
     
 outer:
     cmp r9, r8
