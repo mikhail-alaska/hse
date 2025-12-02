@@ -15,6 +15,7 @@ _start:
     mov rdi, array
     mov ecx, len
     xor r8d, r8d
+    mov bx, 3
     ; способ принтить
     mov rax, 1
     mov rdi, 1
