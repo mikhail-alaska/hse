@@ -27,7 +27,7 @@ int main(void) {
     return 1;
   }
 
-  size_t n = (rand() % rand_max) + 1;
+  size_t n = rand_max;
 
   int32_t min_val, max_val;
   printf("Input min and max values for matrix elements (int32) > ");
