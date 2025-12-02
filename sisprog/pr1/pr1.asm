@@ -4,8 +4,8 @@ public _start
 
 section '.data' writable
 
-msg db "hello world", 0
-len = $-msg
+array   dw  5, 7, 10, 3, 0, 12, 8, 1, 2, 4
+len = $-array
 
 section '.text' executable
 
