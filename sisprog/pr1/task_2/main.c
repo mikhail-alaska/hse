@@ -30,7 +30,7 @@ int main(void) {
   size_t n = rand_max;
 
   int32_t min_val, max_val;
-  printf("Input min and max values for matrix elements (int32) > ");
+  printf("Введите минимальное значение для случайных чисел в матрице > ");
   if (scanf("%" SCNd32 " %" SCNd32, &min_val, &max_val) != 2) {
     fprintf(stderr, "Invalid range input\n");
     return 1;
