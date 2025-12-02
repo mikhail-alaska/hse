@@ -20,9 +20,9 @@ static void print_matrix(int32_t **arr, size_t n, const char *title) {
 int main(void) {
   srand(time(NULL));
 
-  size_t n;
+  int32_t n;
   printf("Введите размер матрицы > ");
-  if (scanf("%zu", &n) != 1 || n == 0) {
+  if (scanf("%d", &n) != 1 || n == 0) {
     fprintf(stderr, "Invalid rand_max\n");
     return 1;
   }
