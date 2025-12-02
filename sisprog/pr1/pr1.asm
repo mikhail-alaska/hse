@@ -32,17 +32,23 @@ loop_start:
     
     mov eax, [result]
     
+    call print_eax
+
 exit:
-
-    mov rax, 1
-    mov rdi, 1
-    mov rsi, result
-    mov rdx, 4
-    syscall
-
-
     mov rax, 60
     mov rdi, 0
     syscall
 
+print_eax:
+    cmp eax, 0
+    jne .convert
 
+    mov byte [outbuf], '0'
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, outbuf
+    mov rdx, 1
+    syscall
+    ret
+
+.convert:
