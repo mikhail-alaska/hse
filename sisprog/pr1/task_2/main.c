@@ -35,6 +35,13 @@ int main(void) {
     fprintf(stderr, "Invalid rand_max\n");
     return 1;
   }
+
+  printf("Введите максимальное значение для случайных чисел в матрице > ");
+  if (scanf("%zu", &max_val) != 1) {
+    fprintf(stderr, "Invalid rand_max\n");
+    return 1;
+  }
+
   if (min_val > max_val) {
     int32_t tmp = min_val;
     min_val = max_val;
