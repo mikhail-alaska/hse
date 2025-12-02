@@ -15,38 +15,34 @@ rotate_clockwise:
     xor     r9d, r9d
 
 outer_loop:
-    cmp     r9d, r8d        ; if (i >= n) -> done
+    cmp     r9d, r8d
     jge     .done
 
     xor     r10d, r10d
 
 inner_loop:
-    cmp     r10d, r8d       ; if (j >= n) -> next row
+    cmp     r10d, r8d
     jge     .next_row
 
-    ; src_row = n - 1 - j
-    mov     r11d, r8d       ; r11d = n
-    dec     r11d            ; r11d = n - 1
-    sub     r11d, r10d      ; r11d = n - 1 - j
+    mov     r11d, r8d
+    dec     r11d
+    sub     r11d, r10d
 
-    ; index_src = src_row * n + i
-    mov     eax, r11d       ; eax = src_row
-    imul    eax, r8d        ; eax = src_row * n
-    add     eax, r9d        ; eax = src_row * n + i
+    mov     eax, r11d
+    imul    eax, r8d
+    add     eax, r9d
 
-    ; offset_src_bytes = index_src * 4
     mov     edx, eax
-    shl     rdx, 2          ; rdx = offset in bytes
-    mov     eax, [rdi + rdx] ; eax = src[index_src]
+    shl     rdx, 2
+    mov     eax, [rdi + rdx]
 
-    ; index_dst = i * n + j
-    mov     edx, r9d        ; edx = i
-    imul    edx, r8d        ; edx = i * n
-    add     edx, r10d       ; edx = i * n + j
+    mov     edx, r9d
+    imul    edx, r8d
+    add     edx, r10d
 
     mov     ecx, edx
-    shl     rcx, 2          ; rcx = offset_dst_bytes
-    mov     [rsi + rcx], eax ; dst[index_dst] = value
+    imul     rcx, 4
+    mov     [rsi + rcx], eax
 
     inc     r10d            ; j++
     jmp     inner_loop
