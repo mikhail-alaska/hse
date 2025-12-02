@@ -87,5 +87,9 @@ int main(void) {
   }
   free(array);
 
+  for (size_t i = 0; i < n; ++i) {
+    free(result[i]);
+  }
+  free(result);
   return 0;
 }
