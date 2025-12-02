@@ -1,55 +1,55 @@
 ; RDI = src
 ; RSI = dst
-; EDX = n = r8d
-; r9d = i
-; r10d = j
+; RDX = n = r8
+; r9 = i
+; r10 = j
 
 format ELF64
-
 public task
 
 section '.text' executable
 
 task:
-    mov r8d, edx
-    xor r9d, r9d
-
-outer_loop:
-    cmp r9d, r8d
+    ; RDI = src (int32_t**)
+    ; RSI = dst (int32_t**)
+    ; RDX = n
+    
+    mov r8, rdx        ; n
+    xor r9, r9         ; i = 0
+    
+outer:
+    cmp r9, r8
     jge done
 
-    xor r10d, r10d
+    xor r10, r10       ; j = 0
+    
+inner:
+    cmp r10, r8
+    jge next
+    
+    ; src[n-1-j][i]
+    mov r11, r8
+    dec r11           ; n-1
+    sub r11, r10      ; n-1-j (строка)
+    
+    ; Получаем указатель на строку src[n-1-j]
+    mov rax, [rdi + r11*8]  ; rax = src[n-1-j]
+    
+    ; Читаем значение src[n-1-j][i]
+    mov eax, [rax + r9*4]   ; eax = src[n-1-j][i]
+    
+    ; Получаем указатель на строку dst[i]
+    mov rcx, [rsi + r9*8]   ; rcx = dst[i]
+    
+    ; Записываем в dst[i][j]
+    mov [rcx + r10*4], eax  ; dst[i][j] = src[n-1-j][i]
+    
+    inc r10
+    jmp inner
 
-inner_loop:
-    cmp r10d, r8d
-    jge next_row
-
-    mov r11d, r8d
-    dec r11d
-    sub r11d, r10d
-
-    mov eax, r11d
-    imul eax, r8d
-    add eax, r9d
-
-    mov edx, eax
-    shl rdx, 2
-    mov eax, [rdi + rdx]
-
-    mov edx, r9d
-    imul edx, r8d
-    add edx, r10d
-
-    mov ecx, edx
-    imul rcx, 4
-    mov [rsi + rcx], eax
-
-    inc r10d
-    jmp inner_loop
-
-next_row:
-    inc r9d
-    jmp outer_loop
+next:
+    inc r9
+    jmp outer
 
 done:
     ret
