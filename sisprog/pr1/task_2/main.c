@@ -71,8 +71,8 @@ int main(void) {
     }
   }
 
-  for (size_t i = 0; i < n; ++i) {
-    for (size_t j = 0; j < n; ++j) {
+  for (uint32_t i = 0; i < n; ++i) {
+    for (uint32_t j = 0; j < n; ++j) {
       int32_t r = (int32_t)(rand() % range);
       array[i][j] = min_val + r;
     }
