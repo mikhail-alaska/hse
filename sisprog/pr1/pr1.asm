@@ -11,6 +11,8 @@ result dd 0
 section '.text' executable
 
 _start:
+
+    ; способ принтить
     mov rax, 1
     mov rdi, 1
     mov rsi, msg
