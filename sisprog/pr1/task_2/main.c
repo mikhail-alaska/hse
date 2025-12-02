@@ -10,7 +10,7 @@ static void print_matrix(int32_t **arr, int32_t n, const char *title) {
   printf("%s (n = %d):\n", title, n);
   for (int32_t i = 0; i < n; ++i) {
     for (int32_t j = 0; j < n; ++j) {
-      printf("%6" PRId32 " ", arr[i][j]);
+      printf("%6d ", arr[i][j]);
     }
     printf("\n");
   }
