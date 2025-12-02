@@ -7,8 +7,8 @@ len = $-msg
 
 _start:
     mov rax, 1
-    mov rbx, 1
-    mov rcx, msg
+    mov rdi, 1
+    mov rsi, msg
     mov rdx, len
     syscall
     call exit
