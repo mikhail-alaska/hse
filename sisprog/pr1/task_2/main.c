@@ -80,7 +80,7 @@ int main(void) {
 
   print_matrix(array, n, "Original matrix");
   int32_t **result = calloc(n, sizeof(int32_t *));
-  for (size_t i = 0; i < n; ++i) {
+  for (uint32_t i = 0; i < n; ++i) {
     result[i] = calloc(n, sizeof(int32_t));
   }
 
@@ -88,12 +88,12 @@ int main(void) {
 
   print_matrix(result, n, "Rotated matrix (clockwise)");
 
-  for (size_t i = 0; i < n; ++i) {
+  for (uint32_t i = 0; i < n; ++i) {
     free(array[i]);
   }
   free(array);
 
-  for (size_t i = 0; i < n; ++i) {
+  for (uint32_t i = 0; i < n; ++i) {
     free(result[i]);
   }
   free(result);
