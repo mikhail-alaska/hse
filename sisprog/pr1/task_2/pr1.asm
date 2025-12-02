@@ -2,6 +2,7 @@
 ; RSI = dst
 ; EDX = n = r8d
 ; r9d = i
+; r10d = j
 
 format ELF64
 
@@ -17,7 +18,7 @@ outer_loop:
     cmp     r9d, r8d        ; if (i >= n) -> done
     jge     .done
 
-    xor     r10d, r10d      ; r10d = j = 0
+    xor     r10d, r10d
 
 inner_loop:
     cmp     r10d, r8d       ; if (j >= n) -> next row
