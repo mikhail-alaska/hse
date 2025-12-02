@@ -30,7 +30,7 @@ loop_start:
 
     mov [result], r8d
     
-    movzx eax, [result]
+    mov eax, [result]
     
 
 exit:
