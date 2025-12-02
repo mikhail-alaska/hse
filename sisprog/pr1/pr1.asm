@@ -17,6 +17,15 @@ _start:
     mov bx, 3
 
 loop_start:
+    mov ax, [rdi]
+    xor dx, dx
+    div bx
+
+    movzx eax, dx
+    add r8d, eax
+
+    add rdi, 2
+    loop loop_start
     
 exit:
     mov rax, 60
