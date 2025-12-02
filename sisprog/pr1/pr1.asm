@@ -6,7 +6,7 @@ msg db "hello world", 0
 len = $-msg
 
 _start:
-    mov rax, 4
+    mov rax, 1
     mov rbx, 1
     mov rcx, msg
     mov rdx, len
