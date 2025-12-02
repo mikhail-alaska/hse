@@ -29,8 +29,8 @@ loop_start:
 
     mov rax, 1
     mov rdi, 1
-    mov rsi, msg
-    mov rdx, len
+    mov rsi, r8d
+    mov rdx, 1
     syscall
     
 exit:
