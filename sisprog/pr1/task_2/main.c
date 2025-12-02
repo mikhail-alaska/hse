@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-void task(int32_t **arr, size_t n);
+void task(int32_t **arr, int32_t **dst,size_t n);
 
 static void print_matrix(int32_t **arr, size_t n, const char *title) {
   printf("%s (n = %zu):\n", title, n);
@@ -73,8 +73,12 @@ int main(void) {
   }
 
   print_matrix(array, n, "Original matrix");
+  int32_t **result = calloc(n, sizeof(int32_t *));
+  for (size_t i = 0; i < n; ++i) {
+    result[i] = calloc(n, sizeof(int32_t));
+  }
 
-  task(array, n);
+  task(array, result, n);
 
   print_matrix(array, n, "Rotated matrix (clockwise)");
 
