@@ -80,7 +80,7 @@ int main(void) {
 
   task(array, result, n);
 
-  print_matrix(array, n, "Rotated matrix (clockwise)");
+  print_matrix(result, n, "Rotated matrix (clockwise)");
 
   for (size_t i = 0; i < n; ++i) {
     free(array[i]);
