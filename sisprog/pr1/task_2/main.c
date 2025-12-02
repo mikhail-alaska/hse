@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-void task(int32_t **arr, int32_t **dst,size_t n);
+void task(int32_t **arr, int32_t **dst, size_t n);
 
 static void print_matrix(int32_t **arr, size_t n, const char *title) {
   printf("%s (n = %zu):\n", title, n);
