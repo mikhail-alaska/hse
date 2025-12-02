@@ -8,4 +8,4 @@ _start:
 exit:
     mov rax, 1
     mov rbx, 55
-    int 0x80
+    syscall
