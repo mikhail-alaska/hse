@@ -39,13 +39,15 @@ exit:
 
 
 print_result:
-    mov eax, [result]      ; <-- читаем число из result в EAX
+    mov eax, [result]
 
-    cmp eax, 10            ; <-- сравниваем с 10
-    jl  .one_digit         ; <-- если меньше 10 — одна цифра
+    cmp eax, 10
+    jl  one_digit
 
-    ; ---- двухзначные числа: 10..20 ----
-    mov byte [outbuf], '1' ; <-- первая цифра — '1'
+    cmp eax, 20
+    je twenty
+
+    mov byte [outbuf], '1'
 
     sub al, 10             ; <-- al = (число - 10) → диапазон 0..10
     add al, '0'            ; <-- превращаем остаток в символ '0'..'9'
@@ -58,8 +60,18 @@ print_result:
     syscall
     ret                    ; <-- возвращаемся в _start
 
-.one_digit:
-    ; ---- однозначные числа: 0..9 ----
+twenty:
+    mov byte [outbuf], '2'
+    mov byte [outbuf+1], '0'
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, outbuf
+    mov rdx, 2
+    syscall
+    ret
+
+
+one_digit:
     add al, '0'            ; <-- превращаем число 0..9 в символ '0'..'9'
     mov [outbuf], al       ; <-- кладём символ в буфер
 
