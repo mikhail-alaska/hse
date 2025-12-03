@@ -80,4 +80,4 @@ one_digit:
     mov rsi, outbuf
     mov rdx, 1
     syscall
-    ret                    ; <-- возвращаемся в _start
+    ret
