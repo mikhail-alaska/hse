@@ -49,16 +49,16 @@ print_result:
 
     mov byte [outbuf], '1'
 
-    sub al, 10             ; <-- al = (число - 10) → диапазон 0..10
-    add al, '0'            ; <-- превращаем остаток в символ '0'..'9'
-    mov [outbuf+1], al     ; <-- записываем вторую цифру в буфер
+    sub al, 10
+    add al, '0'
+    mov [outbuf+1], al
 
-    mov rax, 1             ; <-- sys_write
-    mov rdi, 1             ; <-- дескриптор: stdout
-    mov rsi, outbuf        ; <-- адрес буфера
-    mov rdx, 2             ; <-- длина: 2 символа
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, outbuf
+    mov rdx, 2
     syscall
-    ret                    ; <-- возвращаемся в _start
+    ret
 
 twenty:
     mov byte [outbuf], '2'
@@ -72,12 +72,12 @@ twenty:
 
 
 one_digit:
-    add al, '0'            ; <-- превращаем число 0..9 в символ '0'..'9'
-    mov [outbuf], al       ; <-- кладём символ в буфер
+    add al, '0'
+    mov [outbuf], al
 
-    mov rax, 1             ; <-- sys_write
-    mov rdi, 1             ; <-- stdout
-    mov rsi, outbuf        ; <-- адрес буфера
-    mov rdx, 1             ; <-- длина: 1 байт
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, outbuf
+    mov rdx, 1
     syscall
     ret                    ; <-- возвращаемся в _start
