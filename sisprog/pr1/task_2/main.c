@@ -62,7 +62,7 @@ int main(void) {
       char buffer[20];
       sprintf(buffer, "%d", val);
       array[i][j] = calloc(strlen(buffer), sizeof(char));
-      snprintf(array[i][j], CELL_WIDTH + 1, "%*d", CELL_WIDTH, val);  // форматируем число
+      snprintf(array[i][j], strlen(buffer), "%*d", CELL_WIDTH, val);  // форматируем число
     }
   }
 
