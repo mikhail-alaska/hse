@@ -61,7 +61,7 @@ int main(void) {
       int32_t val = min_val + rand() % range;
       char buffer[20];
       sprintf(buffer, "%d", val);
-      array[i][j] = calloc(CELL_WIDTH + 1, sizeof(char));
+      array[i][j] = calloc(strlen(buffer), sizeof(char));
       snprintf(array[i][j], CELL_WIDTH + 1, "%*d", CELL_WIDTH, val);  // форматируем число
     }
   }
