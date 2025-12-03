@@ -1,18 +1,15 @@
+#include <inttypes.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
-#include <inttypes.h>
 #include <time.h>
-#include <string.h>
 
-#define CELL_WIDTH 6
+void task(int32_t **arr, int32_t **dst, int32_t n);
 
-void task(char ***src, char ***dst, int32_t n);
-
-void print_matrix(char ***arr, int32_t n) {
+static void print_matrix(int32_t **arr, int32_t n) {
   for (int32_t i = 0; i < n; ++i) {
     for (int32_t j = 0; j < n; ++j) {
-      printf("%s ", arr[i][j]);
+      printf("%d ", arr[i][j]);
     }
     printf("\n");
   }
@@ -25,20 +22,21 @@ int main(void) {
   uint32_t n;
   printf("Введите размер матрицы > ");
   if (scanf("%u", &n) != 1 || n == 0) {
-    fprintf(stderr, "Invalid matrix size\n");
+    fprintf(stderr, "Invalid rand_max\n");
     return 1;
   }
 
+
   int32_t min_val, max_val;
-  printf("Введите минимальное значение > ");
+  printf("Введите минимальное значение для случайных чисел в матрице > ");
   if (scanf("%d", &min_val) != 1) {
     fprintf(stderr, "Invalid min_val\n");
     return 1;
   }
 
-  printf("Введите максимальное значение > ");
+  printf("Введите максимальное значение для случайных чисел в матрице > ");
   if (scanf("%d", &max_val) != 1) {
-    fprintf(stderr, "Invalid max_val\n");
+    fprintf(stderr, "Invalid rand_max\n");
     return 1;
   }
 
@@ -50,48 +48,53 @@ int main(void) {
 
   int64_t range = (int64_t)max_val - (int64_t)min_val + 1;
   if (range <= 0) {
-    fprintf(stderr, "Invalid range\n");
+    fprintf(stderr, "Invalid range (overflow or empty)\n");
     return 1;
   }
 
-  char ***array = calloc(n, sizeof(char **));
+  int32_t **array = calloc(n, sizeof(int32_t *));
+  if (!array) {
+    fprintf(stderr, "Allocation failed (rows)\n");
+    return 1;
+  }
+
   for (uint32_t i = 0; i < n; ++i) {
-    array[i] = calloc(n, sizeof(char *));
+    array[i] = calloc(n, sizeof(int32_t));
+    if (!array[i]) {
+      fprintf(stderr, "Allocation failed (row %d)\n", i);
+      for (uint32_t k = 0; k < i; ++k) {
+        free(array[k]);
+      }
+      free(array);
+      return 1;
+    }
+  }
+
+  for (uint32_t i = 0; i < n; ++i) {
     for (uint32_t j = 0; j < n; ++j) {
-      int32_t val = min_val + rand() % range;
-      char buffer[20];
-      sprintf(buffer, "%d", val);
-      array[i][j] = calloc(strlen(buffer), sizeof(char));
-      snprintf(array[i][j], strlen(buffer), "%*d", CELL_WIDTH, val);  // форматируем число
+      int32_t r = (int32_t)(rand() % range);
+      array[i][j] = min_val + r;
     }
   }
 
   print_matrix(array, n);
-
-  // ⬇️ Результат — тоже как строки
-  char ***result = calloc(n, sizeof(char **));
+  int32_t **result = calloc(n, sizeof(int32_t *));
   for (uint32_t i = 0; i < n; ++i) {
-    result[i] = calloc(n, sizeof(char *));
-    for (uint32_t j = 0; j < n; ++j) {
-      result[i][j] = calloc(CELL_WIDTH + 1, sizeof(char));
-    }
+    result[i] = calloc(n, sizeof(int32_t));
   }
 
   task(array, result, n);
 
   print_matrix(result, n);
 
-  // ⬇️ Освобождение памяти
   for (uint32_t i = 0; i < n; ++i) {
-    for (uint32_t j = 0; j < n; ++j) {
-      free(array[i][j]);
-      free(result[i][j]);
-    }
     free(array[i]);
-    free(result[i]);
   }
   free(array);
-  free(result);
 
+  for (uint32_t i = 0; i < n; ++i) {
+    free(result[i]);
+  }
+  free(result);
   return 0;
 }
