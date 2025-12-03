@@ -4,7 +4,7 @@ public _start
 
 section '.data' writable
 
-array dw 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
+array dw 2, 2, 2, 2, 2, 2, 2, 2, 2, 1
 len = 10
 result dd 0
 outbuf  rb 32
