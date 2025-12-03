@@ -9,7 +9,7 @@ void task(int32_t **arr, int32_t **dst, int32_t n);
 static void print_matrix(int32_t **arr, int32_t n) {
   for (int32_t i = 0; i < n; ++i) {
     for (int32_t j = 0; j < n; ++j) {
-      printf("%6d ", arr[i][j]);
+      printf("%d ", arr[i][j]);
     }
     printf("\n");
   }
