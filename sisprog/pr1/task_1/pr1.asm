@@ -63,6 +63,7 @@ print_result:
 twenty:
     mov byte [outbuf], '2'
     mov byte [outbuf+1], '0'
+
     mov rax, 1
     mov rdi, 1
     mov rsi, outbuf
