@@ -1,6 +1,7 @@
 format ELF64
 
 public _start
+public print_result
 
 section '.data' writable
 
