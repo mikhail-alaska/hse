@@ -1,4 +1,4 @@
-format ELF64 executable 3
+format ELF64
 
 public _start
 
