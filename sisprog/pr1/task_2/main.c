@@ -89,12 +89,9 @@ int main(void) {
 
   for (uint32_t i = 0; i < n; ++i) {
     free(array[i]);
-  }
-  free(array);
-
-  for (uint32_t i = 0; i < n; ++i) {
     free(result[i]);
   }
+  free(array);
   free(result);
-  return 0;
+
 }
