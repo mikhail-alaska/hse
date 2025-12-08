@@ -2,14 +2,13 @@ format ELF64 executable
 
 entry _start
 
-section '.data' writable
+segment readable executable
 
 array dw 2, 2, 2, 2, 2, 2, 2, 2, 2, 1
 len = 10
 result dd 0
 outbuf  rb 32
 
-section '.text' executable
 
 _start:
     mov rdi, array
