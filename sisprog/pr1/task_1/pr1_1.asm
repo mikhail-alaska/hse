@@ -1,4 +1,4 @@
-format ELF64
+format ELF64 executable
 
 public _start
 public print_result
