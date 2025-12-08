@@ -1,5 +1,6 @@
 format ELF64 executable
 
+entry _start
 public _start
 public print_result
 
