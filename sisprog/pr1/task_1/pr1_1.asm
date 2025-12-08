@@ -1,14 +1,16 @@
-format ELF64 executable
+format ELF64 
 
-entry _start
+public _start
+public print_result
 
-segment readable executable
+section '.data' writable
 
 array dw 2, 2, 2, 2, 2, 2, 2, 2, 2, 1
 len = 10
 result dd 0
 outbuf  rb 32
 
+section '.text' executable
 
 _start:
     mov rdi, array
