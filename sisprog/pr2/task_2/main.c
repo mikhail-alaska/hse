@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+
 void task(int32_t **arr, int32_t **dst, int32_t n);
 
 void print_matrix(int32_t **arr, int32_t n) {
