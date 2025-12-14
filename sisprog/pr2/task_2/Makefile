@@ -20,7 +20,6 @@ main.o: $(SRC)
 pr1_2.o: $(ASM)
 	$(ASM_CC) $<
 
-# Очистка
 clean:
 	rm -f $(TARGET) *.o
 
