@@ -1,13 +1,13 @@
-TARGET = matrix
-SRC = main.c
-ASM = pr1_2.asm
-OBJ = main.o pr1_2.o
+TARGET := matrix
+SRC := main.c
+ASM := pr1_2.asm
+OBJ := main.o pr1_2.o
 
-CC = gcc
-ASM_CC = fasm
+CC := gcc
+ASM_CC := fasm
 
-CFLAGS = -c -O2 -Wall -Wextra -std=c11
-LDFLAGS = -no-pie
+CFLAGS := -c -O2 -Wall -Wextra -std=c11
+LDFLAGS := -no-pie
 
 all: $(TARGET)
 
