@@ -20,7 +20,7 @@ def ask(model, prompt, attack_type):
                 "prompt": prompt,
                 "stream": False
             },
-            timeout=180
+            timeout=900
         )
         r.raise_for_status()
     else:
@@ -33,7 +33,7 @@ def ask(model, prompt, attack_type):
                     "prompt": prompt,
                     "stream": False
                 },
-                timeout=180
+                timeout=900
             )
             r.raise_for_status()
 
