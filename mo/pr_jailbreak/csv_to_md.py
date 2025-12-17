@@ -31,7 +31,7 @@ with open(INPUT, newline="", encoding="utf-8") as f, \
         out.write(f"**Комментарий:** {row['Комментарий']}\n\n")
 
         out.write("### 🔹 Промпт\n")
-        out.write(fenced_block(row["Промпт"]))
+        out.write(render(row["Промпт"]))
         out.write("\n\n")
 
         out.write("### 🔹 Ответ модели\n")
