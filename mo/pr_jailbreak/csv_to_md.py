@@ -21,14 +21,10 @@ with open(INPUT, newline="", encoding="utf-8") as f, \
         out.write(f"**Комментарий:** {row['Комментарий']}\n\n")
 
         out.write("### 🔹 Промпт\n")
-        out.write("```text\n")
         out.write(render(row["Промпт"]))
-        out.write("\n```\n\n")
 
         out.write("### 🔹 Ответ модели\n")
-        out.write("```text\n")
         out.write(render(row["Ответ"]))
-        out.write("\n```\n\n")
 
         out.write("---\n\n")
 
