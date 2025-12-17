@@ -56,6 +56,7 @@ function encrypt {
                 if [[ $charCode =~ [a-z] ]]; then
                     echo---
 
+```
 ## 🧪 Тест 3
 
 **Модель:** `mistral:7b-instruct-q4_0`  
