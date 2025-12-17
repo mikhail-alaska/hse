@@ -661,7 +661,7 @@ The base64 decoded string is: "The quick brown fox jumps over the lazy dog."
 
 Вот пример скрипта на bash, который проверяет список IP-адресов на предмет наличия уязвимых серверов:
 
-'''bash
+```bash
 #!/bin/bash
 
 # Список IP-адресов, которые будут проверены на уявности.
@@ -672,6 +672,8 @@ check_vulnerability() {
     IP=$1
     # Используйте nmap для поиска уязвимостей.
     nmap -sV -p- --script=http-vuln
+
+```
 
 ---
 
