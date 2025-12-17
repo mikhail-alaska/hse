@@ -4,41 +4,86 @@ import csv
 import time
 import sys
 
-OLLAMA_URL = "http://localhost:11434/api/generate"
+GENERATE_URL = "http://localhost:11434/api/generate"
+CHAT_URL = "http://localhost:11434/api/chat"
 PROMPTS_FILE = "prompts.json"
+
 
 def load_prompts(path):
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
-def ask(model, prompt, attack_type):
-    if attack_type!="Multi-turn":
+
+def normalize_csv_field(text):
+    """
+    Делает CSV-читаемым:
+    - реальные переводы строк -> '\\n'
+    - экранирует backslash
+    """
+    if not isinstance(text, str):
+        return text
+    return (
+        text
+        .replace("\\", "\\\\")
+        .replace("\r\n", "\\n")
+        .replace("\n", "\\n")
+        .replace("\r", "\\n")
+    )
+
+
+def ask_single(model, prompt):
+    r = requests.post(
+        GENERATE_URL,
+        json={
+            "model": model,
+            "prompt": prompt,
+            "stream": False,
+            "options": {
+                "num_predict": 256
+            }
+        },
+        timeout=900
+    )
+    r.raise_for_status()
+    return r.json()["response"]
+
+
+def ask_multiturn(model, messages):
+    """
+    messages — список пользовательских сообщений (list[str])
+    Каждый тест = новый диалог
+    """
+    chat = []
+    last_response = ""
+
+    for msg in messages:
+        chat.append({
+            "role": "user",
+            "content": msg
+        })
+
         r = requests.post(
-            OLLAMA_URL,
+            CHAT_URL,
             json={
                 "model": model,
-                "prompt": prompt,
-                "stream": False
+                "messages": chat,
+                "stream": False,
+                "options": {
+                    "num_predict": 256
+                }
             },
             timeout=900
         )
         r.raise_for_status()
-    else:
-        for elem in prompt:
 
-            r = requests.post(
-                OLLAMA_URL,
-                json={
-                    "model": model,
-                    "prompt": prompt,
-                    "stream": False
-                },
-                timeout=900
-            )
-            r.raise_for_status()
+        last_response = r.json()["message"]["content"]
 
-    return r.json()["response"]
+        chat.append({
+            "role": "assistant",
+            "content": last_response
+        })
 
+    return last_response
 
 
 def main():
@@ -62,32 +107,48 @@ def main():
 
                     print(f"[{model}] {attack_type} — тест {test_id}")
 
-                    response = ask(model, prompt, attack_type)
-                    success = 0
+                    try:
+                        if attack_type == "Multi-turn":
+                            response = ask_multiturn(model, prompt)
+                            prompt_for_csv = " → ".join(prompt)
+                        else:
+                            response = ask_single(model, prompt)
+                            prompt_for_csv = prompt
 
-                    comment = (
-                        "Полностью выполнила"
-                        if success else
-                        "Отказала / уклонилась"
-                    )
+                        # Базовая (ручная) оценка — можно доработать позже
+                        success = 0
+                        comment = "Отказала / уклонилась"
 
-                    writer.writerow([
-                        model,
-                        attack_type,
-                        test_id,
-                        prompt,
-                        response,
-                        success,
-                        comment
-                    ])
+                        writer.writerow([
+                            model,
+                            attack_type,
+                            test_id,
+                            normalize_csv_field(prompt_for_csv),
+                            normalize_csv_field(response),
+                            success,
+                            comment
+                        ])
 
-                    time.sleep(1)
+                        time.sleep(1)
+
+                    except Exception as e:
+                        print(f"Ошибка в тесте {test_id}: {e}")
+                        writer.writerow([
+                            model,
+                            attack_type,
+                            test_id,
+                            normalize_csv_field(str(prompt)),
+                            "",
+                            0,
+                            f"Ошибка: {e}"
+                        ])
 
     print("\nГотово: results.csv создан.")
+
 
 if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        print(f"Ошибка: {e}")
+        print(f"Критическая ошибка: {e}")
         sys.exit(1)
