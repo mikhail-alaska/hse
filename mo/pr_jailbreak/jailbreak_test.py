@@ -11,7 +11,7 @@ def load_prompts(path):
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
-def ask(model, prompt):
+def ask(model, prompt, attack_type):
     r = requests.post(
         OLLAMA_URL,
         json={
@@ -61,7 +61,7 @@ def main():
 
                     print(f"[{model}] {attack_type} — тест {test_id}")
 
-                    response = ask(model, prompt)
+                    response = ask(model, prompt, attack_type)
                     success = is_successful(response)
 
                     comment = (
