@@ -2,7 +2,7 @@ import csv
 from collections import defaultdict
 
 FILES = [
-    #"results_pc.csv",
+    "results_pc.csv",
    "results_laptop.csv"
 ]
 
