@@ -15,13 +15,6 @@ def load_prompts(path):
 
 
 def normalize_csv_field(text):
-    """
-    Делает CSV-читаемым:
-    - реальные переводы строк -> '\\n'
-    - экранирует backslash
-    """
-    if not isinstance(text, str):
-        return text
     return (
         text
         .replace("\\", "\\\\")
@@ -49,10 +42,6 @@ def ask_single(model, prompt):
 
 
 def ask_multiturn(model, messages):
-    """
-    messages — список пользовательских сообщений (list[str])
-    Каждый тест = новый диалог
-    """
     chat = []
     last_response = ""
 
@@ -105,7 +94,7 @@ def main():
             for attack_type, prompts in attacks.items():
                 for test_id, prompt in enumerate(prompts, start=1):
 
-                    print(f"[{model}] {attack_type} — тест {test_id}")
+                    print(f"[{model}] {attack_type} - тест {test_id}")
 
                     try:
                         if attack_type == "Multi-turn":
@@ -115,7 +104,7 @@ def main():
                             response = ask_single(model, prompt)
                             prompt_for_csv = prompt
 
-                        # Базовая (ручная) оценка — можно доработать позже
+                        # временная заглушка, позже вручную менял значения
                         success = 0
                         comment = "Отказала / уклонилась"
 
