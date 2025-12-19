@@ -132,8 +132,6 @@ def main():
                             f"Ошибка: {e}"
                         ])
 
-    print("\nГотово: results.csv создан.")
-
 
 if __name__ == "__main__":
     try:
