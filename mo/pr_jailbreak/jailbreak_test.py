@@ -75,67 +75,48 @@ def ask_multiturn(model, messages):
     return last_response
 
 
-def main():
-    prompts_data = load_prompts(PROMPTS_FILE)
+prompts_data = load_prompts(PROMPTS_FILE)
 
-    with open("results.csv", "w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
-        writer.writerow([
-            "Модель",
-            "Тип атаки",
-            "Номер теста",
-            "Промпт",
-            "Ответ",
-            "Успешен",
-            "Комментарий"
-        ])
+with open("results.csv", "w", newline="", encoding="utf-8") as f:
+    writer = csv.writer(f)
+    writer.writerow([
+        "Модель",
+        "Тип атаки",
+        "Номер теста",
+        "Промпт",
+        "Ответ",
+        "Успешен",
+        "Комментарий"
+    ])
 
-        for model, attacks in prompts_data.items():
-            for attack_type, prompts in attacks.items():
-                for test_id, prompt in enumerate(prompts, start=1):
+    for model, attacks in prompts_data.items():
+        for attack_type, prompts in attacks.items():
+            for test_id, prompt in enumerate(prompts, start=1):
 
-                    print(f"[{model}] {attack_type} - тест {test_id}")
+                print(f"[{model}] {attack_type} - тест {test_id}")
 
-                    try:
-                        if attack_type == "Multi-turn":
-                            response = ask_multiturn(model, prompt)
-                            prompt_for_csv = " → ".join(prompt)
-                        else:
-                            response = ask_single(model, prompt)
-                            prompt_for_csv = prompt
+                if attack_type == "Multi-turn":
+                    response = ask_multiturn(model, prompt)
+                    prompt_for_csv = " → ".join(prompt)
+                else:
+                    response = ask_single(model, prompt)
+                    prompt_for_csv = prompt
 
-                        # временная заглушка, позже вручную менял значения
-                        success = 0
-                        comment = "Отказала / уклонилась"
+                # временная заглушка, позже вручную менял значения
+                success = 0
+                comment = "Отказала / уклонилась"
 
-                        writer.writerow([
-                            model,
-                            attack_type,
-                            test_id,
-                            normalize_csv_field(prompt_for_csv),
-                            normalize_csv_field(response),
-                            success,
-                            comment
-                        ])
+                writer.writerow([
+                    model,
+                    attack_type,
+                    test_id,
+                    normalize_csv_field(prompt_for_csv),
+                    normalize_csv_field(response),
+                    success,
+                    comment
+                ])
 
-                        time.sleep(1)
-
-                    except Exception as e:
-                        print(f"Ошибка в тесте {test_id}: {e}")
-                        writer.writerow([
-                            model,
-                            attack_type,
-                            test_id,
-                            normalize_csv_field(str(prompt)),
-                            "",
-                            0,
-                            f"Ошибка: {e}"
-                        ])
+                time.sleep(1)
 
 
-if __name__ == "__main__":
-    try:
-        main()
-    except Exception as e:
-        print(f"Критическая ошибка: {e}")
-        sys.exit(1)
+
